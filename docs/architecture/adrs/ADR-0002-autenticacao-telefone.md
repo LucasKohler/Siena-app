@@ -2,7 +2,7 @@
 
 ## Status
 
-Proposed — **requires human approval** before implementation
+**Accepted** — v1 implementada com allowlist + JWT (2026-06-01)
 
 ## Date
 
@@ -12,16 +12,19 @@ Proposed — **requires human approval** before implementation
 
 O export Google Stitch (`login_onboarding_pt_br`) mostra login com **número de telefone** e aceite de termos/privacidade. O app é interno (~40 usuários) mas trata **dados pessoais** (telefone, nomes em presença) sujeitos a **LGPD**.
 
-Não há provedor SMS/OTP escolhido nem fluxo de sessão definido. Implementar auth sem esta ADR violaria [SECURITY.md](../../../SECURITY.md) e [AGENTS.md](../../../AGENTS.md).
-
 ## Decision
 
-**Pendente.** Não implementar envio de OTP nem persistência de telefone em produção até o responsável aprovar:
+**v1 (implementada):** [Opção 2 — Allowlist interna](#option-2--allowlist-de-telefones-v1-interna) + **JWT Bearer** (HMAC, sem refresh token nesta fatia).
 
-1. Provedor de SMS/OTP (ou alternativa, ex.: lista allowlist em v1 interna)
-2. Modelo de sessão (JWT, cookie, refresh)
-3. Papéis (atleta, coach, admin)
-4. Textos legais (termos + privacidade)
+1. **Login:** `POST /api/auth/login` com `phoneNumber`; telefone deve existir na allowlist (`users.json` em DEV).
+2. **Sessão:** JWT com claims `sub`, `name`, `role` (`Athlete`, `Coach`, `Admin`); expiração configurável via `Jwt:AccessTokenMinutes`.
+3. **Papéis:** `Athlete` (label "Atleta"), `Coach` ("Comissão"), `Admin` ("Administrador").
+4. **Endpoints públicos nesta v1:** `GET /api/events`, `GET /api/videos` permanecem sem auth; `GET /api/auth/me` exige Bearer token.
+5. **OTP/SMS:** follow-up futuro (Opção 1); não implementado na Fase 2c.
+
+**Trade-off de segurança:** allowlist v1 trata **posse do número** como único fator — adequado para ambiente interno pequeno com onboarding manual; **não** substitui OTP para exposição ampla.
+
+Textos legais (termos + privacidade): conteúdo humano pendente; mobile pode exibir placeholders até spec legal.
 
 ## Options Considered
 
@@ -31,11 +34,15 @@ Não há provedor SMS/OTP escolhido nem fluxo de sessão definido. Implementar a
 
 **Cons:** Custo, configuração, LGPD e retenção de logs; dependência externa.
 
+**Status:** follow-up pós-v1.
+
 ### Option 2 — Allowlist de telefones (v1 interna)
 
 **Pros:** Máxima simplicidade para ~40 usuários; sem SMS em dev.
 
-**Cons:** Onboarding manual; menos escalável se o clube crescer.
+**Cons:** Onboarding manual; fator único (telefone); menos escalável se o clube crescer.
+
+**Status:** **escolhida e implementada** na Fase 2c.
 
 ### Option 3 — SSO institucional (futuro)
 
@@ -45,23 +52,21 @@ Não há provedor SMS/OTP escolhido nem fluxo de sessão definido. Implementar a
 
 ## Consequences
 
-Until decided:
-
-- API pode expor apenas endpoints públicos de leitura em dev com seed, ou health, sem auth
-- Mobile login screen é UI-only até contrato de auth existir
+- Allowlist DEV em `apps/api/src/Siena.Infrastructure/Data/users.json` — não usar em produção.
+- Chave JWT via `Jwt__SigningKey` (env); nunca commitar valor real de produção.
+- Presença no treino pode usar auth na próxima fatia.
+- OTP exigirá ADR amendment ou ADR filha quando provedor for escolhido.
 
 ## Validation Plan
 
-Após decisão:
-
-- Testes de integração para fluxo feliz e OTP inválido/expirado
-- Revisão LGPD com responsável humano
-- `.env.example` documentando variáveis do provedor (sem valores reais)
+- [x] Testes de integração: login allowlist, 401 telefone desconhecido, `/api/auth/me` com/sem token
+- [ ] Revisão LGPD com responsável humano (produção)
+- [x] `.env.example` com variáveis `Jwt__*` (placeholders)
 
 ## Rollback Plan
 
-Desabilitar endpoints de auth; reverter para allowlist ou modo dev documentado.
+Desabilitar `MapAuthEndpoints` e `AddSienaAuth`; reverter para apenas leitura pública.
 
 ## Human Approval Required
 
-**Yes** — obrigatório antes de qualquer código de auth ou armazenamento de telefone.
+**Obtida** para v1 allowlist + JWT (decisão do responsável em 2026-06-01). OTP em produção requer nova aprovação.

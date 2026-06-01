@@ -14,10 +14,12 @@ Postura de segurança para app interno com dados pessoais (telefone, nomes de at
 
 ## Authentication
 
-- Login por **telefone** observado no Stitch
-- Implementação de OTP/SMS: **pendente** — [ADR-0002](docs/architecture/adrs/ADR-0002-autenticacao-telefone.md)
-- Não implementar auth "fake" em produção
-- Tokens/sessões: expiração e revogação a definir no ADR
+- Login por **telefone** — v1 **allowlist interna** + **JWT Bearer** ([ADR-0002](docs/architecture/adrs/ADR-0002-autenticacao-telefone.md) Accepted)
+- Allowlist v1: posse do número cadastrado é o único fator — adequado para ~40 usuários internos; **OTP/SMS é follow-up**
+- Não usar `users.json` DEV nem chave `Jwt:SigningKey` de Development em produção
+- JWT: configurar `Jwt__Issuer`, `Jwt__Audience`, `Jwt__SigningKey` (mín. 32 caracteres) via ambiente; expiração em `Jwt__AccessTokenMinutes`
+- Refresh token e revogação centralizada: **não** implementados na v1
+- Logs: não registrar telefone completo nem token em texto claro
 
 ---
 

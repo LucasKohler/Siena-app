@@ -14,7 +14,7 @@ Plano de migração de **documentação e disciplina de engenharia** do Portfoli
 | Contexto real do Stitch (não lista genérica de features) | Concluído |
 | Descartar confusão Grok (enterprise / Mongo migration) | Concluído |
 | Implementação backend (fundação) | Concluída (Fase 2a) |
-| Implementação backend (domínio) | Parcial (Fase 2b: events + videos) |
+| Implementação backend (domínio) | Parcial (2b–2d; mobile pendente) |
 | Implementação mobile | Pendente |
 
 ---
@@ -57,7 +57,8 @@ Plano de migração de **documentação e disciplina de engenharia** do Portfoli
 ### Fase 1 — Specs complementares (humano)
 
 - [ ] Definir **Financeiro** e **Destaques**
-- [ ] Aprovar **ADR-0002** (OTP / allowlist / sessão)
+- [x] **ADR-0002** v1 (allowlist + JWT) — Accepted
+- [ ] OTP/SMS em produção (follow-up ADR)
 - [ ] Textos legais (termos, privacidade)
 - [ ] Detalhar permissões admin
 
@@ -81,7 +82,18 @@ Docker: arquivos criados; **validação não executada** (Docker ausente no ambi
 - [x] Endpoints: `GET /api/events`, `GET /api/events/{id}`, `GET /api/videos` (leitura + seed JSON DEV)
 - [x] Testes: EventsEndpointTests, VideosEndpointTests; OpenAPI atualizado
 - [x] `dotnet build` / `dotnet test` — 7 testes passando
-- [ ] Presença e auth — após ADR-0002
+### Fase 2c — Autenticação (CONCLUÍDA)
+
+- [x] Allowlist v1 + JWT: `POST /api/auth/login`, `GET /api/auth/me`
+- [x] Seed `users.json` DEV; `AuthEndpointTests`
+- [x] ADR-0002 Accepted; `dotnet test` — 11 testes passando
+
+### Fase 2d — Presença no treino (CONCLUÍDA)
+
+- [x] `GET /api/trainings/next`, `POST /api/trainings/{id}/attendance` (JWT; POST só Atleta)
+- [x] `attendances.json` mutável DEV; posição em `users.json`
+- [x] Testes: `TrainingEndpointTests`
+- [x] `dotnet test` — 16 testes passando
 
 ### Fase 3 — Mobile React Native
 
@@ -93,7 +105,7 @@ Docker: arquivos criados; **validação não executada** (Docker ausente no ambi
 ### Fase 4 — Admin web + polish
 
 - [ ] `apps/admin-web` simples (se necessário)
-- [ ] Auth completo pós ADR-0002
+- [ ] OTP/SMS e refresh token (follow-up ADR)
 - [ ] CI básico
 
 ---
@@ -119,9 +131,9 @@ flowchart TD
 
 ## 5. Próximas ações
 
-1. Você: specs de Financeiro/Destaques + decisão ADR-0002
-2. Opus: refinar contratos de API quando specs existirem
-3. AUTO: Fase 3 mobile scaffold (quando autorizado); presença/auth após ADR-0002
+1. Você: specs de Financeiro/Destaques; textos legais (termos/privacidade)
+2. Opus: plano mobile scaffold (Fase 3)
+3. AUTO: Fase 3 mobile (quando autorizado)
 
 ---
 

@@ -1,0 +1,28 @@
+[
+  {
+    "id": "user-admin-dev",
+    "phoneNumber": "+5511999990001",
+    "displayName": "Admin DEV",
+    "role": "Administrador"
+  },
+  {
+    "id": "user-coach-dev",
+    "phoneNumber": "+5511999990002",
+    "displayName": "Comissão DEV",
+    "role": "Comissão"
+  },
+  {
+    "id": "user-athlete-dev-1",
+    "phoneNumber": "+5511999990003",
+    "displayName": "Atleta DEV 1",
+    "role": "Atleta",
+    "position": "Levantadora"
+  },
+  {
+    "id": "user-athlete-dev-2",
+    "phoneNumber": "+5511999990004",
+    "displayName": "Atleta DEV 2",
+    "role": "Atleta",
+    "position": "Ponteiro"
+  }
+]

@@ -31,7 +31,7 @@ public sealed class EventQueryService : IEventQueryService
     }
 }
 
-internal static class EventMappings
+public static class EventMappings
 {
     public static EventSummaryDto ToSummaryDto(Event eventItem)
     {

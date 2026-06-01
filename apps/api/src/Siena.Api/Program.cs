@@ -8,12 +8,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services
     .AddApplication()
     .AddInfrastructure()
+    .AddSienaAuth(builder.Configuration)
     .AddSienaCors(builder.Configuration)
     .AddSienaOpenApi();
 
 var app = builder.Build();
 
 app.UseSienaCors();
+app.UseSienaAuth();
 
 app.MapGet("/", () => Results.Ok(new
 {
@@ -25,6 +27,8 @@ app.MapGet("/", () => Results.Ok(new
 
 app.MapSienaOpenApi();
 app.MapHealthEndpoints();
+app.MapAuthEndpoints();
+app.MapTrainingEndpoints();
 app.MapEventEndpoints();
 app.MapVideoEndpoints();
 

@@ -21,6 +21,8 @@ public sealed class OpenApiEndpointTests : IClassFixture<WebApplicationFactory<P
 
         var content = await response.Content.ReadAsStringAsync();
         Assert.Contains("/api/health", content);
+        Assert.Contains("/api/auth/login", content);
+        Assert.Contains("/api/trainings/next", content);
         Assert.Contains("/api/events", content);
         Assert.Contains("/api/videos", content);
     }

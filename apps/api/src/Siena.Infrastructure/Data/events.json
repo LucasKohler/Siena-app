@@ -10,11 +10,11 @@
     "description": "Partida da Liga Nacional no ginásio principal da A.E. Siena."
   },
   {
-    "id": "treino-fisico-2026-03-18",
+    "id": "treino-fisico-2026-06-15",
     "title": "Treino Físico",
     "type": "Treino Físico",
     "category": "Feminino",
-    "startsAt": "2026-03-18T08:00:00-03:00",
+    "startsAt": "2026-06-15T08:00:00-03:00",
     "location": "Centro de Treinamento",
     "opponent": null,
     "description": "Sessão de preparação física para o elenco feminino."

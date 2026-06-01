@@ -38,11 +38,14 @@ flowchart LR
 
 **Observado:** login com número de telefone; termos e privacidade.
 
-| Item | Status |
-|------|--------|
-| Identificação por telefone | Confirmado no Stitch |
-| OTP / SMS | A definir — [ADR-0002](docs/architecture/adrs/ADR-0002-autenticacao-telefone.md) |
-| Papéis (atleta vs admin) | A definir |
+| Item | Status | API (implementado v1) |
+|------|--------|----------------------|
+| Identificação por telefone | Confirmado no Stitch | Allowlist (`users.json` DEV) |
+| OTP / SMS | Follow-up — [ADR-0002](docs/architecture/adrs/ADR-0002-autenticacao-telefone.md) Accepted (v1 allowlist) | Não nesta fatia |
+| Papéis | Atleta, comissão, admin | `Athlete`, `Coach`, `Admin` (labels na resposta) |
+| Sessão | JWT Bearer | `POST /api/auth/login`, `GET /api/auth/me` |
+
+**Allowlist DEV:** telefones fictícios em `apps/api/src/Siena.Infrastructure/Data/users.json` (ex.: `+5511999990001` admin).
 
 ---
 
@@ -67,13 +70,14 @@ flowchart LR
 
 **Observado:** tela "Comparecimento no Treino".
 
-| Conceito | Observação no Stitch |
-|----------|----------------------|
-| Próximo treino | Data, hora, quadra/local |
-| Resposta do atleta | Eu vou / Não vou |
-| Confirmados | Lista com nome + posição (Levantadora, Ponteiro, Central, Líbero) |
+| Conceito | Observação no Stitch | API (implementado v1) |
+|----------|----------------------|----------------------|
+| Próximo treino | Data, hora, quadra/local | `GET /api/trainings/next` — evento `Treino Físico` mais próximo no futuro |
+| Resposta do atleta | Eu vou / Não vou | `POST /api/trainings/{eventId}/attendance` — body `{ "status": "Eu vou" \| "Não vou" }` |
+| Confirmados | Nome + posição | Lista em `confirmed` no GET next |
+| Posição | Levantadora, Ponteiro, Central, Líbero | Campo `position` em atletas (`users.json` DEV) |
 
-Regras (quem pode ver lista, prazo para confirmar, edição por coach): **a definir**.
+**Regras v1:** JWT obrigatório; apenas **Atleta** pode POST (própria resposta); edição até `startsAt`; presença em `attendances.json` DEV (mutável). Coach/Admin: leitura via GET next. Prazo/notificações/coach editando terceiros: **fora da v1**.
 
 ---
 
@@ -128,12 +132,11 @@ GET  /api/health          # implementado
 GET  /api/events          # implementado (lista)
 GET  /api/events/{id}     # implementado (detalhe; 404 se inexistente)
 
-# Auth — após ADR-0002
-POST /api/auth/...
+POST /api/auth/login       # implementado (allowlist v1)
+GET  /api/auth/me          # implementado (JWT Bearer)
 
-# Presença — após ADR-0002
-GET  /api/trainings/next
-POST /api/trainings/{id}/attendance
+GET  /api/trainings/next              # implementado (JWT)
+POST /api/trainings/{id}/attendance   # implementado (JWT; só Atleta)
 
 GET  /api/videos          # implementado (lista)
 
