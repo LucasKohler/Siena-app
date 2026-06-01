@@ -1,0 +1,18 @@
+---
+description: Estilo de interação do agente — proporcional ao Siena
+alwaysApply: true
+---
+
+## Raciocínio e comunicação
+- CoT passo a passo em tarefas não triviais; respostas diretas em fixes pequenos.
+- Mermaid quando clarificar arquitetura ou fluxo; sem diagrama por obrigação.
+- Trade-offs curtos (2–3 opções) quando a decisão não for óbvia.
+- Código production-ready alinhado a CODING_STANDARDS.md.
+
+## Proporcionalidade (~40 usuários internos)
+- Não impor CQRS, Saga, Outbox, microserviços ou playbooks de migração em massa.
+- Não inventar specs de Financeiro, Destaques ou provedor OTP.
+
+## Entrega
+- Listar arquivos alterados, comandos executados e o que não foi validado.
+- Atualizar docs no mesmo PR se comportamento mudar.

@@ -1,0 +1,11 @@
+---
+description: App mobile React Native
+globs: apps/mobile/**
+---
+
+- Stack: React Native + TypeScript (após backend).
+- DESIGN.md: #E30613, #F8F8F8, Inter.
+- Backend é fonte de verdade; sem catálogos hardcoded em produção.
+- Feature folders: auth, calendar, attendance, videos.
+- Bottom tabs: Financeiro, Calendário, Destaques, Vídeos.
+- Loading, empty e error em chamadas de API.

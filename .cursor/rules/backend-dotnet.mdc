@@ -1,0 +1,12 @@
+---
+description: Backend .NET — camadas simples
+globs: apps/api/**
+---
+
+- Api → Application → Domain; Infrastructure implementa persistência.
+- DTOs explícitos; Domain sem ASP.NET.
+- Endpoints agrupados por área (events, attendance, videos).
+- JSON seed em Infrastructure até ADR de banco.
+- Validar requests; não vazar stack trace.
+- `dotnet build` e `dotnet test` na solution; reportar se não executados.
+- Sem CQRS handlers "por padrão" sem necessidade real.

@@ -1,0 +1,28 @@
+# .NET
+bin/
+obj/
+TestResults/
+*.user
+*.suo
+
+# Node (mobile, future)
+node_modules/
+
+# Environment
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Docker and logs
+*.log
+
+# OS and editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Build outputs
+dist/
+coverage/

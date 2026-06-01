@@ -1,0 +1,26 @@
+[
+  {
+    "id": "video-liga-nacional-2026",
+    "title": "Melhores momentos — Liga Nacional 2026",
+    "url": "https://example.com/videos/liga-nacional-2026",
+    "durationSeconds": 765,
+    "publishedAt": "2026-03-10T14:00:00-03:00",
+    "views": 128
+  },
+  {
+    "id": "video-treino-fisico-marco",
+    "title": "Treino físico — março 2026",
+    "url": "https://example.com/videos/treino-fisico-marco",
+    "durationSeconds": 420,
+    "publishedAt": "2026-03-05T09:30:00-03:00",
+    "views": 54
+  },
+  {
+    "id": "video-amistoso-sesi",
+    "title": "Amistoso Siena vs. Sesi-SP — resumo",
+    "url": "https://example.com/videos/amistoso-sesi",
+    "durationSeconds": 612,
+    "publishedAt": "2026-02-28T18:15:00-03:00",
+    "views": 203
+  }
+]

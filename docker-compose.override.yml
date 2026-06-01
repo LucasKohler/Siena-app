@@ -1,0 +1,12 @@
+services:
+  api:
+    build:
+      target: development
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+      SIENA__CORS__ALLOWEDORIGINS__0: http://localhost:3000
+      SIENA__CORS__ALLOWEDORIGINS__1: http://localhost:8081
+    volumes:
+      - ./apps/api:/src

@@ -1,0 +1,8 @@
+---
+description: Documentação alinhada ao código
+globs: **/*.md
+---
+
+- Documentar comportamento implementado, não aspiracional.
+- Manter diagramas Mermaid quando úteis.
+- Atualizar docs no mesmo PR que muda comportamento ou comandos.

@@ -1,0 +1,31 @@
+---
+description: Regras core — Siena Voleibol (hub interno A.E. Siena, ~40 usuários)
+alwaysApply: true
+---
+
+# Siena — regras do agente
+
+## Contexto
+Hub digital interno do clube A.E. Siena (~40 usuários, tráfego leve). Backend .NET pragmático; mobile React Native depois. Simplicidade primeiro — sem padrões enterprise.
+
+## Antes de codar
+1. Ler AGENTS.md, ARCHITECTURE.md, DOMAIN.md, PRODUCT.md, DESIGN.md.
+2. `git status` e inspecionar arquivos tocados.
+3. Menor mudança segura; declarar suposições.
+
+## Funcionalidades (Stitch)
+Login telefone, Calendário, Presença, Vídeos, Financeiro/Destaques (a definir), Admin.
+
+## Proibido
+- Microserviços, CQRS/Saga/event-bus, migração Mongo→SQL
+- Inventar regras de Financeiro/Destaques/OTP
+- Endpoints/tabelas não documentados
+- Afirmar validação sem executar comando
+- Secrets em código ou docs
+- Dados falsos de atletas/eventos em produção
+
+## Escopo
+Documentation | Backend | Mobile | AdminWeb | Tests | Docker | Security — mais de 2 áreas → split PR.
+
+## Parar e pedir humano
+- Breaking API, LGPD/PII, auth/SMS (ADR-0002), banco, deploy, secrets.

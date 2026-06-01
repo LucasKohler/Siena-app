@@ -1,0 +1,16 @@
+---
+description: Workflow Claude Opus (planejamento) + Cursor AUTO (execução)
+alwaysApply: true
+---
+
+## Planejamento (Claude Opus)
+Features médias/grandes: plano com arquivos, testes, riscos e validação ANTES de write-heavy. Consultar AI-CONFIG.md e MIGRATION-PLAN.md.
+
+## Execução (Cursor AUTO)
+Implementar apenas o plano aprovado; um concern por vez. Inspecionar código antes de editar.
+
+## Revisão
+Antes de merge: testes, security se inputs/auth/Docker, escopo do diff. Não afirmar que comandos passaram sem executá-los.
+
+## Anti-patterns
+Rewrites massivos, prompts genéricos, testes fake, regras de negócio inventadas, dados falsos de jogos/associados em produção.

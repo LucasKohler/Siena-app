@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Siena.Api/Siena.Api.csproj" />
+    <Project Path="src/Siena.Application/Siena.Application.csproj" />
+    <Project Path="src/Siena.Domain/Siena.Domain.csproj" />
+    <Project Path="src/Siena.Infrastructure/Siena.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Siena.Api.Tests/Siena.Api.Tests.csproj" />
+    <Project Path="tests/Siena.Application.Tests/Siena.Application.Tests.csproj" />
+  </Folder>
+</Solution>
