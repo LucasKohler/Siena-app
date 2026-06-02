@@ -14,4 +14,14 @@ public interface IAttendanceRepository
         CancellationToken cancellationToken);
 
     Task UpsertAsync(Attendance attendance, CancellationToken cancellationToken);
+
+    Task<IReadOnlyCollection<PendingAttendanceDto>> ListPendingByEventAsync(
+        string eventId,
+        CancellationToken cancellationToken);
+
+    Task SetApprovalAsync(
+        string eventId,
+        string userId,
+        AttendanceApprovalStatus approvalStatus,
+        CancellationToken cancellationToken);
 }

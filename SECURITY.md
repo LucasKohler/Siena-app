@@ -16,7 +16,7 @@ Postura de segurança para app interno com dados pessoais (telefone, nomes de at
 
 - Login por **telefone** — v1 **allowlist interna** + **JWT Bearer** ([ADR-0002](docs/architecture/adrs/ADR-0002-autenticacao-telefone.md) Accepted)
 - Allowlist v1: posse do número cadastrado é o único fator — adequado para ~40 usuários internos; **OTP/SMS é follow-up**
-- Não usar `users.json` DEV nem chave `Jwt:SigningKey` de Development em produção
+- Não usar dados de seed DEV nem chave `Jwt:SigningKey` de Development em produção
 - JWT: configurar `Jwt__Issuer`, `Jwt__Audience`, `Jwt__SigningKey` (mín. 32 caracteres) via ambiente; expiração em `Jwt__AccessTokenMinutes`
 - Refresh token e revogação centralizada: **não** implementados na v1
 - Logs: não registrar telefone completo nem token em texto claro
@@ -56,6 +56,12 @@ Rules:
 - Respostas de erro claras, sem stack trace
 - CORS restrito a origens conhecidas (mobile dev, admin web)
 - Rate limiting antes de exposição pública (se algum dia houver)
+
+### Admin (Fase 2f)
+
+- **CRUD de usuários** expõe PII (telefone, nome, posição) — apenas papéis **Staff** (`Administrador`, `Comissão`) via policy JWT `Staff`
+- **Desativação** (`PATCH /api/admin/users/{id}/active`) preferida a exclusão física; usuário inativo não autentica
+- Telefones DEV fictícios apenas em Development; gate humano antes de dados reais em produção
 
 ---
 

@@ -1,0 +1,10 @@
+# Perfil produção: imagem publicada, sem bind mount, sem seed automático de DEV.
+# Uso: docker compose -f docker-compose.yml -f docker-compose.prod.yml up --build
+
+services:
+  api:
+    build:
+      target: runtime
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+    volumes: !reset []

@@ -6,7 +6,11 @@ services:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: http://+:8080
       DOTNET_USE_POLLING_FILE_WATCHER: "true"
+      ConnectionStrings__Default: Host=postgres;Port=5432;Database=siena;Username=siena;Password=${POSTGRES_PASSWORD:-siena_dev}
       SIENA__CORS__ALLOWEDORIGINS__0: http://localhost:3000
       SIENA__CORS__ALLOWEDORIGINS__1: http://localhost:8081
+    depends_on:
+      postgres:
+        condition: service_healthy
     volumes:
       - ./apps/api:/src

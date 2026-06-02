@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace Siena.Api.Tests;
 
-public sealed class OpenApiEndpointTests : IClassFixture<WebApplicationFactory<Program>>
+public sealed class OpenApiEndpointTests : IClassFixture<SienaWebApplicationFactory>
 {
     private readonly HttpClient _client;
 
-    public OpenApiEndpointTests(WebApplicationFactory<Program> factory)
+    public OpenApiEndpointTests(SienaWebApplicationFactory factory)
     {
         _client = factory.CreateClient();
     }
@@ -25,5 +25,8 @@ public sealed class OpenApiEndpointTests : IClassFixture<WebApplicationFactory<P
         Assert.Contains("/api/trainings/next", content);
         Assert.Contains("/api/events", content);
         Assert.Contains("/api/videos", content);
+        Assert.Contains("/api/admin/events", content);
+        Assert.Contains("/api/admin/users", content);
+        Assert.Contains("/api/admin/trainings", content);
     }
 }

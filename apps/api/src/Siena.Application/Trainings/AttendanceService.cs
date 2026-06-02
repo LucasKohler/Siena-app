@@ -1,4 +1,5 @@
 using Siena.Application.Events;
+using Siena.Domain;
 using Siena.Domain.Attendance;
 using Siena.Domain.Events;
 using Siena.Domain.Users;
@@ -51,7 +52,7 @@ public sealed class AttendanceService : IAttendanceService
 
         try
         {
-            status = TrainingMappings.ParseStatus(request.Status);
+            status = DomainLabels.ParseAttendanceStatus(request.Status);
         }
         catch (ArgumentException)
         {
@@ -62,6 +63,7 @@ public sealed class AttendanceService : IAttendanceService
             eventId,
             userId,
             status,
+            AttendanceApprovalStatus.Pending,
             DateTimeOffset.UtcNow);
 
         await _attendanceRepository.UpsertAsync(attendance, cancellationToken);

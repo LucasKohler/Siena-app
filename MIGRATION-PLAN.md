@@ -14,7 +14,7 @@ Plano de migração de **documentação e disciplina de engenharia** do Portfoli
 | Contexto real do Stitch (não lista genérica de features) | Concluído |
 | Descartar confusão Grok (enterprise / Mongo migration) | Concluído |
 | Implementação backend (fundação) | Concluída (Fase 2a) |
-| Implementação backend (domínio) | Parcial (2b–2d; mobile pendente) |
+| Implementação backend (domínio) | Parcial (2b–2d + Postgres; mobile pendente) |
 | Implementação mobile | Pendente |
 
 ---
@@ -25,7 +25,7 @@ Plano de migração de **documentação e disciplina de engenharia** do Portfoli
 
 - Clean Architecture em 4 projetos .NET
 - Disciplina de IA → `AGENTS.md` + `AI-CONFIG.md` + `.cursor/rules`
-- JSON seed → repositório
+- PostgreSQL + EF Core (Docker Compose)
 - Docker Compose para API
 - xUnit, Conventional Commits, ADRs
 
@@ -79,21 +79,36 @@ Docker: arquivos criados; **validação não executada** (Docker ausente no ambi
 
 ### Fase 2b — Backend domínio (parcialmente concluída)
 
-- [x] Endpoints: `GET /api/events`, `GET /api/events/{id}`, `GET /api/videos` (leitura + seed JSON DEV)
+- [x] Endpoints: `GET /api/events`, `GET /api/events/{id}`, `GET /api/videos` (leitura + PostgreSQL)
 - [x] Testes: EventsEndpointTests, VideosEndpointTests; OpenAPI atualizado
 - [x] `dotnet build` / `dotnet test` — 7 testes passando
 ### Fase 2c — Autenticação (CONCLUÍDA)
 
 - [x] Allowlist v1 + JWT: `POST /api/auth/login`, `GET /api/auth/me`
-- [x] Seed `users.json` DEV; `AuthEndpointTests`
+- [x] Allowlist DEV via `DatabaseSeeder`; `AuthEndpointTests`
 - [x] ADR-0002 Accepted; `dotnet test` — 11 testes passando
+
+### Fase 2e — Persistência PostgreSQL (CONCLUÍDA)
+
+- [x] ADR-0003 Accepted; EF Core + Npgsql
+- [x] `SienaDbContext`, migration `InitialCreate`, repositórios EF
+- [x] Docker Compose com serviço `postgres`
+- [x] Testes com SQLite in-memory (`SienaWebApplicationFactory`)
+- [x] `dotnet test` — ver Fase 2f
 
 ### Fase 2d — Presença no treino (CONCLUÍDA)
 
 - [x] `GET /api/trainings/next`, `POST /api/trainings/{id}/attendance` (JWT; POST só Atleta)
-- [x] `attendances.json` mutável DEV; posição em `users.json`
+- [x] Persistência em PostgreSQL (`attendances`)
 - [x] Testes: `TrainingEndpointTests`
-- [x] `dotnet test` — 16 testes passando
+
+### Fase 2f — Admin API (CONCLUÍDA)
+
+- [x] CRUD eventos e usuários (allowlist) em `/api/admin` — policy **Staff**
+- [x] Fluxo presença em dois passos: atleta → Pendente; staff approve/reject; `confirmed` só Aprovado
+- [x] `UserAccount.IsActive`; migration `AddAttendanceApprovalAndUserIsActive`
+- [x] Testes: `AdminEventsEndpointTests`, `AdminUsersEndpointTests`, `AdminAttendanceApprovalTests`
+- [x] `dotnet test` — 23 testes passando
 
 ### Fase 3 — Mobile React Native
 

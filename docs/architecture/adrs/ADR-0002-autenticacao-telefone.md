@@ -16,7 +16,7 @@ O export Google Stitch (`login_onboarding_pt_br`) mostra login com **número de 
 
 **v1 (implementada):** [Opção 2 — Allowlist interna](#option-2--allowlist-de-telefones-v1-interna) + **JWT Bearer** (HMAC, sem refresh token nesta fatia).
 
-1. **Login:** `POST /api/auth/login` com `phoneNumber`; telefone deve existir na allowlist (`users.json` em DEV).
+1. **Login:** `POST /api/auth/login` com `phoneNumber`; telefone deve existir na allowlist PostgreSQL (`users`).
 2. **Sessão:** JWT com claims `sub`, `name`, `role` (`Athlete`, `Coach`, `Admin`); expiração configurável via `Jwt:AccessTokenMinutes`.
 3. **Papéis:** `Athlete` (label "Atleta"), `Coach` ("Comissão"), `Admin` ("Administrador").
 4. **Endpoints públicos nesta v1:** `GET /api/events`, `GET /api/videos` permanecem sem auth; `GET /api/auth/me` exige Bearer token.
@@ -52,7 +52,7 @@ Textos legais (termos + privacidade): conteúdo humano pendente; mobile pode exi
 
 ## Consequences
 
-- Allowlist DEV em `apps/api/src/Siena.Infrastructure/Data/users.json` — não usar em produção.
+- Allowlist DEV via `DatabaseSeeder` (PostgreSQL) — não reutilizar dados de seed em produção.
 - Chave JWT via `Jwt__SigningKey` (env); nunca commitar valor real de produção.
 - Presença no treino pode usar auth na próxima fatia.
 - OTP exigirá ADR amendment ou ADR filha quando provedor for escolhido.

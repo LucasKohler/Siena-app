@@ -16,6 +16,13 @@ Hub digital interno do clube A.E. Siena (~40 usuários, tráfego leve). Backend 
 ## Funcionalidades (Stitch)
 Login telefone, Calendário, Presença, Vídeos, Financeiro/Destaques (a definir), Admin.
 
+## Evitar overengineering
+- Ver `docs/OVERENGINEERING.md` — ~40 usuários; menor mudança segura
+- Sem MediatR, `IRepository<T>`, Redis, K8s ou colapsar camadas
+- Repositórios por agregado + serviços explícitos (padrão atual OK)
+- Labels PT só em `DomainLabels`; seed DEV via `DatabaseSeeder` (PostgreSQL)
+- Nova lib/camada só com problema concreto + ADR se relevante
+
 ## Proibido
 - Microserviços, CQRS/Saga/event-bus, migração Mongo→SQL
 - Inventar regras de Financeiro/Destaques/OTP

@@ -1,0 +1,456 @@
+{
+  "info": {
+    "_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "name": "Siena API",
+    "description": "Hub digital A.E. Siena — rotas da API (Docker: http://localhost:5000).\n\n1. Execute **Auth → Login (Admin DEV)** (ou Coach/Atleta).\n2. O token JWT é salvo em `{{token}}` automaticamente.\n3. Demais pastas usam Bearer herdado da collection.\n\nTelefones seed DEV: +5511999990001 (Admin), 0002 (Comissão), 0003/0004 (Atleta).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000"
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "eventId",
+      "value": "treino-fisico-2026-06-15"
+    },
+    {
+      "key": "userId",
+      "value": "user-athlete-dev-1"
+    }
+  ],
+  "item": [
+    {
+      "name": "System",
+      "item": [
+        {
+          "name": "Health",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/health"
+          }
+        },
+        {
+          "name": "API Root",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login (Admin DEV)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  const json = pm.response.json();",
+                  "  pm.collectionVariables.set('token', json.token);",
+                  "  pm.test('Token saved', () => pm.expect(json.token).to.be.a('string').and.not.empty);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phoneNumber\": \"+5511999990001\"\n}"
+            },
+            "url": "{{baseUrl}}/api/auth/login"
+          }
+        },
+        {
+          "name": "Login (Comissão DEV)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  pm.collectionVariables.set('token', pm.response.json().token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phoneNumber\": \"+5511999990002\"\n}"
+            },
+            "url": "{{baseUrl}}/api/auth/login"
+          }
+        },
+        {
+          "name": "Login (Atleta DEV 1)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  pm.collectionVariables.set('token', pm.response.json().token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phoneNumber\": \"+5511999990003\"\n}"
+            },
+            "url": "{{baseUrl}}/api/auth/login"
+          }
+        },
+        {
+          "name": "Me (JWT)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/auth/me"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Events (público)",
+      "item": [
+        {
+          "name": "Listar eventos",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/events"
+          }
+        },
+        {
+          "name": "Detalhe evento",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/events/{{eventId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Videos (público)",
+      "item": [
+        {
+          "name": "Listar vídeos",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/videos"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Trainings",
+      "item": [
+        {
+          "name": "Próximo treino",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/trainings/next"
+          }
+        },
+        {
+          "name": "Marcar presença (Atleta)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"Eu vou\"\n}"
+            },
+            "url": "{{baseUrl}}/api/trainings/{{eventId}}/attendance",
+            "description": "Apenas papel Atleta. Valores: `Eu vou` | `Não vou`. Grava aprovação Pendente."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin (Staff)",
+      "description": "Requer JWT de Administrador ou Comissão. Faça login antes.",
+      "item": [
+        {
+          "name": "Events",
+          "item": [
+            {
+              "name": "Listar eventos",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "{{baseUrl}}/api/admin/events"
+              }
+            },
+            {
+              "name": "Criar evento",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"treino-fisico-2026-07-01\",\n  \"title\": \"Treino Extra\",\n  \"type\": \"Treino Físico\",\n  \"category\": \"Masculino\",\n  \"startsAt\": \"2026-07-01T11:00:00Z\",\n  \"location\": \"Ginásio\",\n  \"opponent\": null,\n  \"description\": \"Treino cadastrado via Postman\"\n}"
+                },
+                "url": "{{baseUrl}}/api/admin/events",
+                "description": "type: Liga Nacional | Treino Físico | Amistoso\ncategory: Masculino | Feminino"
+              }
+            },
+            {
+              "name": "Atualizar evento",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"Treino Físico (atualizado)\",\n  \"type\": \"Treino Físico\",\n  \"category\": \"Feminino\",\n  \"startsAt\": \"2026-06-15T11:00:00Z\",\n  \"location\": \"Centro de Treinamento\",\n  \"opponent\": null,\n  \"description\": \"Sessão de preparação física\"\n}"
+                },
+                "url": "{{baseUrl}}/api/admin/events/{{eventId}}"
+              }
+            },
+            {
+              "name": "Remover evento",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": "{{baseUrl}}/api/admin/events/liga-nacional-minas-2026-03-15",
+                "description": "409 se houver presenças vinculadas."
+              }
+            }
+          ]
+        },
+        {
+          "name": "Users",
+          "item": [
+            {
+              "name": "Listar usuários (ativos)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/users?includeInactive=false",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "admin", "users"],
+                  "query": [
+                    {
+                      "key": "includeInactive",
+                      "value": "false"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Listar usuários (incl. inativos)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/users?includeInactive=true",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "admin", "users"],
+                  "query": [
+                    {
+                      "key": "includeInactive",
+                      "value": "true"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Cadastrar usuário",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"user-postman-test\",\n  \"phoneNumber\": \"+5511988881234\",\n  \"displayName\": \"Atleta Postman\",\n  \"role\": \"Atleta\",\n  \"position\": \"Central\"\n}"
+                },
+                "url": "{{baseUrl}}/api/admin/users",
+                "description": "role: Atleta | Comissão | Administrador\nposition: Levantadora | Ponteiro | Central | Líbero (opcional)"
+              }
+            },
+            {
+              "name": "Atualizar usuário",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"displayName\": \"Atleta DEV 1\",\n  \"role\": \"Atleta\",\n  \"position\": \"Levantadora\"\n}"
+                },
+                "url": "{{baseUrl}}/api/admin/users/{{userId}}"
+              }
+            },
+            {
+              "name": "Ativar/desativar usuário",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"isActive\": false\n}"
+                },
+                "url": "{{baseUrl}}/api/admin/users/{{userId}}/active"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Attendance approval",
+          "item": [
+            {
+              "name": "Presenças pendentes",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "{{baseUrl}}/api/admin/trainings/{{eventId}}/attendances/pending"
+              }
+            },
+            {
+              "name": "Aprovar presença",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": \"approve\"\n}"
+                },
+                "url": "{{baseUrl}}/api/admin/trainings/{{eventId}}/attendances/{{userId}}/approval"
+              }
+            },
+            {
+              "name": "Rejeitar presença",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": \"reject\"\n}"
+                },
+                "url": "{{baseUrl}}/api/admin/trainings/{{eventId}}/attendances/{{userId}}/approval"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

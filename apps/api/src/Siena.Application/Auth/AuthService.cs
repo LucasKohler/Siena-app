@@ -1,3 +1,4 @@
+using Siena.Domain;
 using Siena.Domain.Users;
 
 namespace Siena.Application.Auth;
@@ -26,7 +27,7 @@ public sealed class AuthService : IAuthService
 
         var user = await _userRepository.FindByPhoneAsync(normalizedPhone, cancellationToken);
 
-        if (user is null)
+        if (user is null || !user.IsActive)
         {
             return null;
         }
@@ -37,42 +38,6 @@ public sealed class AuthService : IAuthService
             token,
             expiresAt,
             user.DisplayName,
-            AuthMappings.ToLabel(user.Role));
-    }
-}
-
-public static class AuthMappings
-{
-    public static string ToLabel(UserRole role)
-    {
-        return role switch
-        {
-            UserRole.Athlete => "Atleta",
-            UserRole.Coach => "Comissão",
-            UserRole.Admin => "Administrador",
-            _ => throw new ArgumentOutOfRangeException(nameof(role), role, null)
-        };
-    }
-
-    public static string ToClaimValue(UserRole role)
-    {
-        return role switch
-        {
-            UserRole.Athlete => nameof(UserRole.Athlete),
-            UserRole.Coach => nameof(UserRole.Coach),
-            UserRole.Admin => nameof(UserRole.Admin),
-            _ => throw new ArgumentOutOfRangeException(nameof(role), role, null)
-        };
-    }
-
-    public static string ToLabelFromClaim(string claimValue)
-    {
-        return claimValue switch
-        {
-            nameof(UserRole.Athlete) => ToLabel(UserRole.Athlete),
-            nameof(UserRole.Coach) => ToLabel(UserRole.Coach),
-            nameof(UserRole.Admin) => ToLabel(UserRole.Admin),
-            _ => claimValue
-        };
+            DomainLabels.ToLabel(user.Role));
     }
 }

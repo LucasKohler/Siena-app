@@ -67,7 +67,7 @@ Antes de implementar ou alterar comportamento:
 | Prioridade | Documento |
 |------------|-----------|
 | 1 | `AGENTS.md` (este arquivo) |
-| 2 | `ARCHITECTURE.md`, `DOMAIN.md`, `PRODUCT.md` |
+| 2 | `ARCHITECTURE.md`, `DOMAIN.md`, `PRODUCT.md`, `docs/OVERENGINEERING.md` |
 | 3 | `DESIGN.md` |
 | 4 | `CODING_STANDARDS.md`, `TESTING.md`, `SECURITY.md` |
 | 5 | `AI-CONFIG.md` |
@@ -86,8 +86,8 @@ apps/admin-web/ → painel admin simples (futuro, mesma API)
 
 - **Clean Architecture pragmática** no backend (ver [ARCHITECTURE.md](ARCHITECTURE.md))
 - Backend é **fonte de verdade**; mobile não duplica catálogos
-- Dados: JSON seed no Infrastructure → banco simples só quando necessário (ADR)
-- Docker Compose: API em dev; mobile no emulador/dispositivo
+- Dados: **PostgreSQL** + EF Core ([ADR-0003](docs/architecture/adrs/ADR-0003-persistencia-postgresql.md)); Docker Compose (API + banco)
+- Proporcionalidade: [docs/OVERENGINEERING.md](docs/OVERENGINEERING.md)
 
 Versões: .NET LTS; Node LTS para React Native. Sem preview/canary sem aprovação.
 

@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using Siena.Application.Auth;
+using Siena.Domain;
 
 namespace Siena.Api.Endpoints;
 
@@ -41,7 +42,7 @@ public static class AuthEndpoints
 
             var role = string.IsNullOrWhiteSpace(roleClaim)
                 ? string.Empty
-                : AuthMappings.ToLabelFromClaim(roleClaim);
+                : DomainLabels.ToLabelFromRoleClaim(roleClaim);
 
             return Results.Ok(new CurrentUserDto(id, displayName, role));
         })

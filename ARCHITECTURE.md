@@ -2,7 +2,7 @@
 
 Arquitetura do hub digital interno da **A.E. Siena**. Referência de engenharia: monorepo **Portfolio** (Clean Architecture pragmática). Referência de produto: export Google Stitch (`stitch_siena_voleibol_digital_hub.zip`).
 
-> **Escala:** ~40 usuários internos, tráfego leve. **Simplicidade** é requisito, não opcional.
+> **Escala:** ~40 usuários internos, tráfego leve. **Simplicidade** é requisito, não opcional. Ver [docs/OVERENGINEERING.md](docs/OVERENGINEERING.md).
 
 ---
 
@@ -19,7 +19,7 @@ Arquitetura do hub digital interno da **A.E. Siena**. Referência de engenharia:
 
 ### Features (from Stitch)
 
-- Login por telefone ([ADR-0002](docs/architecture/adrs/ADR-0002-autenticacao-telefone.md) pendente)
+- Login por telefone ([ADR-0002](docs/architecture/adrs/ADR-0002-autenticacao-telefone.md) — Accepted)
 - Tabs: Financeiro (*a definir*), Calendário, Destaques (*a definir*), Vídeos
 - Presença no treino (Eu vou / Não vou)
 - Admin (mobile + web)
@@ -68,7 +68,7 @@ flowchart LR
   AppLayer[Application]
   Domain[Domain]
   Infra[Infrastructure]
-  Data[(JSON seed / DB simples)]
+  Data[(PostgreSQL)]
 
   Mobile --> API
   AdminWeb --> API
@@ -93,7 +93,7 @@ Siena.Domain
   Domain models, enums — no infrastructure deps
 
 Siena.Infrastructure
-  Repositories, JSON seeds, external services (SMS later)
+  EF Core + PostgreSQL, repositories, external services (SMS later)
 ```
 
 Dependency direction:
@@ -112,11 +112,11 @@ Domain -> (none outward)
 | Group | Purpose |
 |-------|---------|
 | Health | Liveness |
-| Auth | After ADR-0002 |
+| Auth | Login JWT + allowlist ([ADR-0002](docs/architecture/adrs/ADR-0002-autenticacao-telefone.md)) |
 | Events | Calendar |
 | Attendance | Training presence |
 | Videos | Official channel list |
-| Admin | Content management (later) |
+| Admin | Content management |
 
 ---
 
@@ -131,15 +131,17 @@ Domain -> (none outward)
 
 ## Data strategy
 
-1. **v0:** JSON files in `Infrastructure/Data/` (Portfolio pattern)
-2. **v1:** Simple relational DB when justified — light ADR, no over-modeling
-3. **PII:** phone, attendance — only after LGPD review ([SECURITY.md](SECURITY.md))
+1. **Atual:** **PostgreSQL** + EF Core — [ADR-0003](docs/architecture/adrs/ADR-0003-persistencia-postgresql.md); seed via `DatabaseSeeder`
+2. **Dev:** `docker-compose.yml` (API + PostgreSQL)
+3. **Testes:** SQLite in-memory via `Persistence:Provider=Sqlite`
+4. **Legado:** JSON em `Infrastructure/Data/` — remover ao tocar; não é persistência primária
+5. **PII:** phone, attendance — revisão LGPD humana antes de produção ([SECURITY.md](SECURITY.md))
 
 ---
 
 ## Infrastructure (dev)
 
-- `docker-compose.yml`: API service only
+- `docker-compose.yml`: API + PostgreSQL
 - Mobile runs on host emulator/device
 - `.env.example` for API URLs and CORS
 
@@ -147,11 +149,12 @@ Domain -> (none outward)
 
 ## Architectural guardrails
 
-- No microservices
+- No microservices, CQRS, Saga, Outbox or event-bus
 - No `packages/shared` until real duplication
-- DTOs at API boundary
-- ADR before: database, auth provider, new messaging layer
+- DTOs at API boundary; serviços explícitos (sem MediatR por padrão)
+- ADR before: new database, auth provider, messaging layer or major lib
 - Preserve API contracts unless breaking change approved
+- Proporcionalidade: [docs/OVERENGINEERING.md](docs/OVERENGINEERING.md)
 
 ---
 
@@ -161,19 +164,19 @@ Domain -> (none outward)
 |-----------|-------|
 | 4-layer .NET structure | Reuse |
 | Endpoint groups + xUnit | Reuse |
-| JSON repository pattern | Reuse |
+| JSON repository pattern | Legado — substituído por EF Core |
 | Next.js `apps/web` | Replace with React Native |
 | Stitch portfolio export | Replace with Siena Stitch + DESIGN.md |
 
 ---
 
-## Pending ADRs
+## ADRs
 
 | ADR | Topic |
 |-----|-------|
 | [0001](docs/architecture/adrs/ADR-0001-mobile-stack.md) | React Native — Accepted |
-| [0002](docs/architecture/adrs/ADR-0002-autenticacao-telefone.md) | Phone auth / OTP — Proposed |
-| TBD | Database when needed |
+| [0002](docs/architecture/adrs/ADR-0002-autenticacao-telefone.md) | Phone auth / JWT — Accepted |
+| [0003](docs/architecture/adrs/ADR-0003-persistencia-postgresql.md) | PostgreSQL + EF Core — Accepted |
 | TBD | Admin web stack |
 | TBD | Financeiro / Destaques when specced |
 

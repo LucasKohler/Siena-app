@@ -70,8 +70,9 @@ Login observado no Stitch: **número de telefone** (detalhes de OTP em ADR-0002)
 
 ### Admin
 
-- **Admin mobile** — tela presente no export (screenshot)
-- **Painel admin web** — placeholder no export (*a definir*)
+- **Backend (Fase 2f):** API `/api/admin` — Staff cadastra eventos e usuários (allowlist), aprova presenças em treino (fluxo dois passos)
+- **Admin mobile** — tela presente no export (screenshot); UI **Fase 3**
+- **Painel admin web** — placeholder no export; **Fase 4**
 
 ---
 

@@ -7,6 +7,7 @@ public sealed record NextTrainingDto(
     DateTimeOffset StartsAt,
     string Location,
     string? MyStatus,
+    string? MyApprovalStatus,
     IReadOnlyCollection<ConfirmedAttendeeDto> Confirmed);
 
 public sealed record ConfirmedAttendeeDto(string DisplayName, string? Position);

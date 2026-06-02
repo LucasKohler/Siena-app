@@ -4,11 +4,11 @@ using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace Siena.Api.Tests;
 
-public sealed class EventsEndpointTests : IClassFixture<WebApplicationFactory<Program>>
+public sealed class EventsEndpointTests : IClassFixture<SienaWebApplicationFactory>
 {
     private readonly HttpClient _client;
 
-    public EventsEndpointTests(WebApplicationFactory<Program> factory)
+    public EventsEndpointTests(SienaWebApplicationFactory factory)
     {
         _client = factory.CreateClient();
     }

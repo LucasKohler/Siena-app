@@ -7,12 +7,17 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
     .AddApplication()
-    .AddInfrastructure()
+    .AddInfrastructure(builder.Configuration)
     .AddSienaAuth(builder.Configuration)
     .AddSienaCors(builder.Configuration)
     .AddSienaOpenApi();
 
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    await app.Services.ApplyMigrationsAndSeedAsync(app.Configuration);
+}
 
 app.UseSienaCors();
 app.UseSienaAuth();
@@ -30,6 +35,7 @@ app.MapHealthEndpoints();
 app.MapAuthEndpoints();
 app.MapTrainingEndpoints();
 app.MapEventEndpoints();
+app.MapAdminEndpoints();
 app.MapVideoEndpoints();
 
 app.Run();

@@ -4,9 +4,10 @@ globs: apps/api/**
 ---
 
 - Api → Application → Domain; Infrastructure implementa persistência.
-- DTOs explícitos; Domain sem ASP.NET.
-- Endpoints agrupados por área (events, attendance, videos).
-- JSON seed em Infrastructure até ADR de banco.
+- DTOs explícitos; Domain sem ASP.NET; serviços de aplicação explícitos (sem MediatR).
+- Repositórios por agregado — não `IRepository<T>` genérico.
+- PostgreSQL + EF Core (padrão); testes com SQLite in-memory.
+- Endpoints agrupados por área (events, attendance, videos, admin).
 - Validar requests; não vazar stack trace.
 - `dotnet build` e `dotnet test` na solution; reportar se não executados.
-- Sem CQRS handlers "por padrão" sem necessidade real.
+- Proporcionalidade: `docs/OVERENGINEERING.md` — sem CQRS/Redis/K8s sem ADR.

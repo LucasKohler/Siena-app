@@ -10,7 +10,7 @@ public static class EventsEndpoints
             .WithTags("Events");
 
         group.MapGet("/", async (
-            IEventQueryService events,
+            IEventService events,
             CancellationToken cancellationToken) =>
         {
             var result = await events.GetEventsAsync(cancellationToken);
@@ -23,7 +23,7 @@ public static class EventsEndpoints
 
         group.MapGet("/{id}", async (
             string id,
-            IEventQueryService events,
+            IEventService events,
             CancellationToken cancellationToken) =>
         {
             var result = await events.GetEventByIdAsync(id, cancellationToken);

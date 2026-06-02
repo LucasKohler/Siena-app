@@ -7,12 +7,14 @@ public sealed class UserAccount
         string phoneNumber,
         string displayName,
         UserRole role,
+        bool isActive = true,
         PlayerPosition? position = null)
     {
         Id = id;
         PhoneNumber = phoneNumber;
         DisplayName = displayName;
         Role = role;
+        IsActive = isActive;
         Position = position;
     }
 
@@ -20,5 +22,6 @@ public sealed class UserAccount
     public string PhoneNumber { get; }
     public string DisplayName { get; }
     public UserRole Role { get; }
+    public bool IsActive { get; }
     public PlayerPosition? Position { get; }
 }

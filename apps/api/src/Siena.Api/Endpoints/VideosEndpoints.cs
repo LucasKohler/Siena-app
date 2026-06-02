@@ -10,12 +10,12 @@ public static class VideosEndpoints
             .WithTags("Videos");
 
         group.MapGet("/", async (
-            IVideoQueryService videos,
+            IVideoRepository videos,
             CancellationToken cancellationToken) =>
         {
-            var result = await videos.GetVideosAsync(cancellationToken);
+            var items = await videos.ListAsync(cancellationToken);
 
-            return Results.Ok(result);
+            return Results.Ok(items.Select(VideoMappings.ToSummaryDto).ToArray());
         })
         .WithName("GetVideos")
         .WithSummary("Gets video summaries.")

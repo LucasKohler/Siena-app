@@ -2,6 +2,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Siena.Application.Auth;
+using Siena.Domain.Users;
 
 namespace Siena.Api.Configuration;
 
@@ -35,7 +36,14 @@ public static class AuthConfiguration
                 };
             });
 
-        services.AddAuthorization();
+        services.AddAuthorization(options =>
+        {
+            options.AddPolicy("Staff", policy =>
+                policy.RequireRole(nameof(UserRole.Admin), nameof(UserRole.Coach)));
+
+            options.AddPolicy("AdminOnly", policy =>
+                policy.RequireRole(nameof(UserRole.Admin)));
+        });
 
         return services;
     }

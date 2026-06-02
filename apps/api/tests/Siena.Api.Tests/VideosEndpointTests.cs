@@ -4,11 +4,11 @@ using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace Siena.Api.Tests;
 
-public sealed class VideosEndpointTests : IClassFixture<WebApplicationFactory<Program>>
+public sealed class VideosEndpointTests : IClassFixture<SienaWebApplicationFactory>
 {
     private readonly HttpClient _client;
 
-    public VideosEndpointTests(WebApplicationFactory<Program> factory)
+    public VideosEndpointTests(SienaWebApplicationFactory factory)
     {
         _client = factory.CreateClient();
     }

@@ -1,5 +1,6 @@
-using Siena.Application.Events;
 using Siena.Application.Auth;
+using Siena.Application.Events;
+using Siena.Domain;
 using Siena.Domain.Attendance;
 using Siena.Domain.Events;
 
@@ -53,10 +54,11 @@ public sealed class TrainingQueryService : ITrainingQueryService
         return new NextTrainingDto(
             nextTraining.Id,
             nextTraining.Title,
-            EventMappings.ToLabel(nextTraining.Category),
+            DomainLabels.ToLabel(nextTraining.Category),
             nextTraining.StartsAt,
             nextTraining.Location,
-            myAttendance is null ? null : TrainingMappings.ToLabel(myAttendance.Status),
+            myAttendance is null ? null : DomainLabels.ToLabel(myAttendance.Status),
+            myAttendance is null ? null : DomainLabels.ToLabel(myAttendance.ApprovalStatus),
             confirmed);
     }
 
@@ -65,7 +67,9 @@ public sealed class TrainingQueryService : ITrainingQueryService
         CancellationToken cancellationToken)
     {
         var attending = attendances
-            .Where(attendance => attendance.Status == AttendanceStatus.Attending)
+            .Where(attendance =>
+                attendance.Status == AttendanceStatus.Attending
+                && attendance.ApprovalStatus == AttendanceApprovalStatus.Approved)
             .ToArray();
 
         var confirmed = new List<ConfirmedAttendeeDto>();
@@ -81,7 +85,7 @@ public sealed class TrainingQueryService : ITrainingQueryService
 
             confirmed.Add(new ConfirmedAttendeeDto(
                 user.DisplayName,
-                user.Position is null ? null : TrainingMappings.ToLabel(user.Position.Value)));
+                user.Position is null ? null : DomainLabels.ToLabel(user.Position.Value)));
         }
 
         return confirmed

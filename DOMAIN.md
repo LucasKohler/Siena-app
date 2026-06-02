@@ -40,12 +40,12 @@ flowchart LR
 
 | Item | Status | API (implementado v1) |
 |------|--------|----------------------|
-| Identificação por telefone | Confirmado no Stitch | Allowlist (`users.json` DEV) |
+| Identificação por telefone | Confirmado no Stitch | Allowlist PostgreSQL (`users`) |
 | OTP / SMS | Follow-up — [ADR-0002](docs/architecture/adrs/ADR-0002-autenticacao-telefone.md) Accepted (v1 allowlist) | Não nesta fatia |
 | Papéis | Atleta, comissão, admin | `Athlete`, `Coach`, `Admin` (labels na resposta) |
 | Sessão | JWT Bearer | `POST /api/auth/login`, `GET /api/auth/me` |
 
-**Allowlist DEV:** telefones fictícios em `apps/api/src/Siena.Infrastructure/Data/users.json` (ex.: `+5511999990001` admin).
+**Allowlist DEV:** telefones fictícios via `DatabaseSeeder` em Development (ex.: `+5511999990001` admin).
 
 ---
 
@@ -62,7 +62,7 @@ flowchart LR
 | Participantes / adversário | Ex.: "Siena vs. Minas T.C." em liga/amistoso | `opponent` (opcional) |
 | Descrição | — | `description` (detalhe; opcional) |
 
-**Endpoints:** `GET /api/events`, `GET /api/events/{id}` — leitura; seed JSON **DEV** em `apps/api/src/Siena.Infrastructure/Data/events.json`.
+**Endpoints:** `GET /api/events`, `GET /api/events/{id}` — leitura; dados DEV via `DatabaseSeeder` (PostgreSQL).
 
 ---
 
@@ -73,11 +73,12 @@ flowchart LR
 | Conceito | Observação no Stitch | API (implementado v1) |
 |----------|----------------------|----------------------|
 | Próximo treino | Data, hora, quadra/local | `GET /api/trainings/next` — evento `Treino Físico` mais próximo no futuro |
-| Resposta do atleta | Eu vou / Não vou | `POST /api/trainings/{eventId}/attendance` — body `{ "status": "Eu vou" \| "Não vou" }` |
-| Confirmados | Nome + posição | Lista em `confirmed` no GET next |
-| Posição | Levantadora, Ponteiro, Central, Líbero | Campo `position` em atletas (`users.json` DEV) |
+| Resposta do atleta | Eu vou / Não vou | `POST /api/trainings/{eventId}/attendance` — body `{ "status": "Eu vou" \| "Não vou" }` → grava **Pendente** |
+| Aprovação | Staff aprova/rejeita | `POST /api/admin/trainings/{eventId}/attendances/{userId}/approval` — `{ "action": "approve" \| "reject" }` |
+| Confirmados | Nome + posição | Lista em `confirmed` no GET next — só `Eu vou` + **Aprovado** |
+| Posição | Levantadora, Ponteiro, Central, Líbero | Campo `position` em atletas (PostgreSQL) |
 
-**Regras v1:** JWT obrigatório; apenas **Atleta** pode POST (própria resposta); edição até `startsAt`; presença em `attendances.json` DEV (mutável). Coach/Admin: leitura via GET next. Prazo/notificações/coach editando terceiros: **fora da v1**.
+**Regras v1:** JWT obrigatório; apenas **Atleta** pode POST (própria resposta); edição até `startsAt`; re-marcação reseta aprovação para **Pendente**. **Administrador** e **Comissão** aprovam/rejeitam e gerenciam eventos/usuários via `/api/admin`. Prazo/notificações/coach editando presença de terceiros sem approve: **fora da v1**.
 
 ---
 
@@ -93,7 +94,7 @@ flowchart LR
 | Visualizações | Exibido na UI | `views` |
 | Ação | Assistir / link externo | `url` |
 
-**Endpoint:** `GET /api/videos` — leitura; seed JSON **DEV** em `apps/api/src/Siena.Infrastructure/Data/videos.json`.
+**Endpoint:** `GET /api/videos` — leitura; dados DEV via `DatabaseSeeder` (PostgreSQL).
 
 Origem dos vídeos em produção (YouTube embed, URL manual, CMS): **a definir**.
 
@@ -115,13 +116,15 @@ Origem dos vídeos em produção (YouTube embed, URL manual, CMS): **a definir**
 
 **Observado:** `admin_mobile` (screenshot) e `painel_admin_web` (placeholder).
 
-Funções esperadas (hipótese mínima, não implementar sem spec):
+**API (Fase 2f — backend):** grupo `/api/admin` com policy **Staff** (`Administrador` + `Comissão`):
 
-- Manter calendário e eventos
-- Gerenciar conteúdo de vídeos/destaques
-- Possível gestão financeira
+| Área | Endpoints |
+|------|-----------|
+| Eventos | `GET/POST/PUT/DELETE /api/admin/events` — CRUD todos os tipos |
+| Usuários (allowlist) | `GET/POST/PUT /api/admin/users`, `PATCH .../active` — desativação preferida a exclusão |
+| Presença | `GET .../attendances/pending`, `POST .../approval` |
 
-Detalhe de permissões: **a definir**.
+UI mobile admin e painel web: **Fase 3/4**. CRUD vídeos/destaques/financeiro: **fora da 2f**.
 
 ---
 
@@ -135,13 +138,22 @@ GET  /api/events/{id}     # implementado (detalhe; 404 se inexistente)
 POST /api/auth/login       # implementado (allowlist v1)
 GET  /api/auth/me          # implementado (JWT Bearer)
 
-GET  /api/trainings/next              # implementado (JWT)
-POST /api/trainings/{id}/attendance   # implementado (JWT; só Atleta)
+GET  /api/trainings/next              # implementado (JWT; inclui myApprovalStatus)
+POST /api/trainings/{id}/attendance   # implementado (JWT; só Atleta → Pendente)
 
 GET  /api/videos          # implementado (lista)
 
-# Admin — futuro
-# ...
+GET    /api/admin/events
+POST   /api/admin/events
+PUT    /api/admin/events/{id}
+DELETE /api/admin/events/{id}
+GET    /api/admin/users
+POST   /api/admin/users
+PUT    /api/admin/users/{id}
+PATCH  /api/admin/users/{id}/active
+GET    /api/admin/trainings/{eventId}/attendances/pending
+POST   /api/admin/trainings/{eventId}/attendances/{userId}/approval
+# (todos Staff — JWT)
 ```
 
 ---

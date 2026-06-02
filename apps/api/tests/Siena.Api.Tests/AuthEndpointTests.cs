@@ -6,11 +6,11 @@ using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace Siena.Api.Tests;
 
-public sealed class AuthEndpointTests : IClassFixture<WebApplicationFactory<Program>>
+public sealed class AuthEndpointTests : IClassFixture<SienaWebApplicationFactory>
 {
     private readonly HttpClient _client;
 
-    public AuthEndpointTests(WebApplicationFactory<Program> factory)
+    public AuthEndpointTests(SienaWebApplicationFactory factory)
     {
         _client = factory.CreateClient();
     }

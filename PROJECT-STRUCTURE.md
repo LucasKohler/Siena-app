@@ -55,8 +55,7 @@ Siena/
 │   │   │   │   └── Program.cs
 │   │   │   ├── Siena.Application/
 │   │   │   ├── Siena.Domain/
-│   │   │   └── Siena.Infrastructure/
-│   │   │       └── Data/              # JSON seeds
+│   │   │   └── Siena.Infrastructure/    # EF + DatabaseSeeder (DEV)
 │   │   └── tests/
 │   │       ├── Siena.Api.Tests/
 │   │       └── Siena.Application.Tests/
@@ -117,7 +116,7 @@ Reutilizar padrão de `apps/api/`; não portar `apps/web` nem Stitch do portfoli
 |-----------|-------|
 | `apps/api/src/{Layer}/` | Igual |
 | Endpoints por domínio | events, attendance, videos, auth |
-| `Infrastructure/Data/*.json` | Seeds iniciais |
+| `DatabaseSeeder` | Dados DEV em PostgreSQL |
 | Sem Turborepo/Nx | Igual |
 
 ---
