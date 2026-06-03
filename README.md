@@ -2,90 +2,122 @@
 
 Hub digital interno da **A.E. Siena** — gestão e desempenho do time (~40 usuários).
 
-## Stack (atual)
+## Stack
 
 | Camada | Tecnologia | Status |
 |--------|------------|--------|
-| API | .NET 10, ASP.NET Core | Fundação + domínio + PostgreSQL (EF Core) |
-| Mobile | React Native + TypeScript | Planejado ([ADR-0001](docs/architecture/adrs/ADR-0001-mobile-stack.md)) |
-| Admin web | A definir | Planejado |
+| API | .NET 10, ASP.NET Core, PostgreSQL (EF Core) | Em produção interna |
+| Mobile | Expo + Expo Router + TypeScript | [apps/mobile](apps/mobile/) — Fase 3 |
+| Admin web | A definir | Planejado (Fase 4) |
+
+Referências: [ADR-0001](docs/architecture/adrs/ADR-0001-mobile-stack.md) (RN), [ADR-0003](docs/architecture/adrs/ADR-0003-persistencia-postgresql.md) (Postgres), [ADR-0004](docs/architecture/adrs/ADR-0004-mobile-expo-router.md) (Expo).
 
 ## Documentação
 
-- [AGENTS.md](AGENTS.md) — regras para agentes e desenvolvedores
-- [ARCHITECTURE.md](ARCHITECTURE.md)
-- [PRODUCT.md](PRODUCT.md) / [DOMAIN.md](DOMAIN.md)
-- [DESIGN.md](DESIGN.md)
+| Documento | Conteúdo |
+|-----------|----------|
+| [AGENTS.md](AGENTS.md) | Regras para agentes e desenvolvedores |
+| [ARCHITECTURE.md](ARCHITECTURE.md) | Camadas e decisões |
+| [PRODUCT.md](PRODUCT.md) / [DOMAIN.md](DOMAIN.md) | Produto e domínio |
+| [DESIGN.md](DESIGN.md) | Identidade visual (Stitch) |
+| [MIGRATION-PLAN.md](MIGRATION-PLAN.md) | Fases do projeto |
+| [apps/mobile/README.md](apps/mobile/README.md) | App mobile (Expo) |
 
 ## Pré-requisitos
 
-- **Docker** com Compose (recomendado: [Docker Desktop](https://www.docker.com/products/docker-desktop/) + integração **WSL 2**, ou Docker Engine no Ubuntu WSL)
-- [.NET SDK 10.0.201](global.json) — só para `dotnet build` / `dotnet test` no host (opcional para rodar a API)
-- Node.js LTS (para mobile, fase futura)
+- **Docker** + Compose (recomendado: Docker Desktop + WSL 2, ou Engine no Ubuntu WSL)
+- [.NET SDK 10.0.201](global.json) — build/test da API no host (opcional para rodar a API)
+- **Node.js LTS** — app mobile (`apps/mobile`)
 
-## Executar o stack (Docker Compose) — recomendado
+## Início rápido
 
-Na raiz do repositório (PowerShell com WSL, ou terminal Ubuntu):
+### 1. API + banco (Docker)
+
+Na raiz do repositório:
 
 ```bash
 cp .env.example .env
 docker compose up --build
 ```
 
-Isso sobe **PostgreSQL** + **API** na mesma rede:
+- **Postgres:** `localhost:5433` (host), usuário/senha `siena` / `siena_dev`, banco `siena`
+- **API:** `http://localhost:5000` — em Development aplica migrations EF e seed DEV na subida
 
-- Postgres: credenciais `siena` / `siena_dev`, banco `siena` (porta no host: **5433** por padrão)
-- API: `http://localhost:5000` — em **Development** aplica **migrations EF** e **seed DEV** na subida
+Parar: `docker compose down` (dados no volume `siena_pg_data`).
 
-Parar: `docker compose down` — dados persistem no volume `siena_pg_data`.
-
-### Docker no Windows sem `docker` no PATH
-
-Use o WSL:
+**Windows sem `docker` no PATH** — use WSL (ajuste o caminho do projeto):
 
 ```powershell
 wsl -e bash -lc "cd /mnt/c/Users/lucas/Documents/Projects/Siena && docker compose up --build"
 ```
 
-(Ajuste o caminho se o projeto estiver em outro diretório.)
+### 2. App mobile (Expo)
 
-### Produção em container (sem hot reload)
+Com a API no ar:
+
+```bash
+cd apps/mobile
+cp .env.example .env
+npm install
+npm start
+```
+
+Configure `EXPO_PUBLIC_API_URL` no `.env` (ver tabela em [apps/mobile/README.md](apps/mobile/README.md)).
+
+**Login DEV (seed):**
+
+| Telefone | Papel |
+|----------|-------|
+| +5511999990001 | Administrador |
+| +5511999990002 | Comissão |
+| +5511999990003 | Atleta |
+| +5511999990004 | Atleta |
+
+### Produção em container (API, sem hot reload)
 
 ```bash
 docker compose -f docker-compose.yml -f docker-compose.prod.yml up --build
 ```
 
-## URLs (API no host)
+## URLs da API
 
 ```txt
-API:     http://localhost:5000
-Health:  http://localhost:5000/api/health
-Auth:    POST http://localhost:5000/api/auth/login  (body: `{ "phoneNumber": "+5511999990001" }`)
-         GET  http://localhost:5000/api/auth/me      (header: `Authorization: Bearer <token>`)
-Trainings: GET  http://localhost:5000/api/trainings/next (Bearer)
-           POST http://localhost:5000/api/trainings/{eventId}/attendance (Bearer; Atleta)
-Admin:   /api/admin/* (Bearer; Staff = Admin ou Comissão)
-Events:  http://localhost:5000/api/events
-Videos:  http://localhost:5000/api/videos
-Scalar:  http://localhost:5000/scalar
-OpenAPI: http://localhost:5000/openapi/v1.json
-Postman: importar `postman/Siena-API.postman_collection.json` (ver [postman/README.md](postman/README.md))
+API:       http://localhost:5000
+Health:    http://localhost:5000/api/health
+Auth:      POST /api/auth/login   { "phoneNumber": "+5511999990001" }
+           GET  /api/auth/me      Authorization: Bearer <token>
+Events:    GET  /api/events
+Videos:    GET  /api/videos
+Trainings: GET  /api/trainings/next
+           POST /api/trainings/{eventId}/attendance   (Atleta; "Eu vou" | "Não vou")
+Admin:     /api/admin/*   (Staff: Administrador ou Comissão)
+Scalar:    http://localhost:5000/scalar
+OpenAPI:   http://localhost:5000/openapi/v1.json
 ```
 
-### API no host (sem Docker) — opcional
+Postman: [postman/Siena-API.postman_collection.json](postman/Siena-API.postman_collection.json) — ver [postman/README.md](postman/README.md).
 
-Se precisar rodar só o `dotnet` no Windows, aponte para o Postgres do Compose (`localhost:5433`) ou use `scripts/setup-database.ps1` com Postgres nativo. O fluxo padrão do projeto é **100% Compose**.
+Calendário: categorias **Masculino** e **Feminino** apenas.
 
 ## Build e testes
+
+**API:**
 
 ```bash
 dotnet build apps/api/Siena.slnx
 dotnet test  apps/api/Siena.slnx
 ```
 
-Última validação: **build e testes passaram** (23 testes: health, OpenAPI, DI, events, videos, auth, trainings, admin).
+**Mobile:**
 
-### JWT (produção / Docker)
+```bash
+cd apps/mobile
+npm run typecheck
+npm test
+npm run smoke:api    # requer API em :5000
+```
+
+## JWT (produção / Docker)
 
 Definir via ambiente (nunca commitar chave real):
 
@@ -98,35 +130,23 @@ Jwt__AccessTokenMinutes=480
 
 Ver [.env.example](.env.example).
 
-## Banco de dados (PostgreSQL)
-
-Criado e migrado **dentro do Compose**: o serviço `api` em `Development` executa `MigrateAsync` + seed na inicialização. Não é necessário `dotnet ef database update` no host.
-
-Ver [ADR-0003](docs/architecture/adrs/ADR-0003-persistencia-postgresql.md).
-
-## Docker
-
-| Arquivo | Função |
-|---------|--------|
-| `docker-compose.yml` | Postgres + API (dev, hot reload) |
-| `docker-compose.prod.yml` | Override: imagem `runtime`, `Production` |
-| `apps/api/Dockerfile` | Targets `development` e `runtime` |
-| `.env.example` | Variáveis para Compose |
-
-Validar config:
-
-```bash
-docker compose config
-```
-
-## Estrutura
+## Estrutura do repositório
 
 ```txt
-apps/api/          # Backend .NET (Siena.slnx)
-docs/              # ADRs
-.cursor/rules/     # Regras Cursor
+apps/api/              # Backend .NET (Siena.slnx)
+apps/mobile/           # Expo + Expo Router
+docs/architecture/adrs/
+postman/
+docker-compose.yml
+.cursor/rules/
 ```
 
-## Próxima fatia
+Detalhes: [PROJECT-STRUCTURE.md](PROJECT-STRUCTURE.md).
 
-Mobile React Native (Fase 3) — ver [MIGRATION-PLAN.md](MIGRATION-PLAN.md).
+## Próximas fatias
+
+- Financeiro e Destaques (spec de produto)
+- Admin web simples (Fase 4)
+- OTP/SMS em produção ([ADR-0002](docs/architecture/adrs/ADR-0002-autenticacao-telefone.md))
+
+Ver [MIGRATION-PLAN.md](MIGRATION-PLAN.md).
