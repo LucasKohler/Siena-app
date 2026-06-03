@@ -30,7 +30,7 @@ Dados sensíveis prováveis:
 - Número de telefone
 - Nome de atletas e posição
 - Presença em treinos (comportamento)
-- Possíveis **menores** em categorias de base (Sub-20)
+- Dados de **menores** atletas, se aplicável — revisão LGPD humana
 
 Rules:
 

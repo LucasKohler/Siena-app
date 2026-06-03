@@ -15,7 +15,7 @@ Plano de migração de **documentação e disciplina de engenharia** do Portfoli
 | Descartar confusão Grok (enterprise / Mongo migration) | Concluído |
 | Implementação backend (fundação) | Concluída (Fase 2a) |
 | Implementação backend (domínio) | Parcial (2b–2d + Postgres; mobile pendente) |
-| Implementação mobile | Pendente |
+| Implementação mobile | Em andamento (Fase 3 scaffold) |
 
 ---
 
@@ -110,12 +110,15 @@ Docker: arquivos criados; **validação não executada** (Docker ausente no ambi
 - [x] Testes: `AdminEventsEndpointTests`, `AdminUsersEndpointTests`, `AdminAttendanceApprovalTests`
 - [x] `dotnet test` — 23 testes passando
 
-### Fase 3 — Mobile React Native
+### Fase 3 — Mobile React Native (EM ANDAMENTO)
 
-- [ ] Scaffold `apps/mobile`
-- [ ] Tema DESIGN.md
-- [ ] Tabs + telas Stitch (auth, calendário, presença, vídeos)
-- [ ] Cliente API
+- [x] Scaffold `apps/mobile` (Expo + Expo Router — ADR-0004)
+- [x] Tema DESIGN.md (`src/theme`)
+- [x] Tabs: Financeiro (placeholder), Calendário, Vídeos; login; presença; admin mobile (Staff)
+- [x] Cliente API (`src/api`, JWT secure-store)
+- [ ] Destaques (adiado)
+- [x] Admin: criar eventos, aprovar presenças, contagem pendentes, listagem usuários
+- [ ] Admin: criar/editar usuários no app (somente listagem por ora)
 
 ### Fase 4 — Admin web + polish
 
@@ -147,8 +150,8 @@ flowchart TD
 ## 5. Próximas ações
 
 1. Você: specs de Financeiro/Destaques; textos legais (termos/privacidade)
-2. Opus: plano mobile scaffold (Fase 3)
-3. AUTO: Fase 3 mobile (quando autorizado)
+2. Smoke manual mobile + Expo Go contra API DEV
+3. Admin mobile: telas CRUD eventos/presenças (próxima fatia)
 
 ---
 

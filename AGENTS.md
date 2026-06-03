@@ -21,7 +21,7 @@ Fonte única de verdade para agentes de IA e para a equipe. Leia este arquivo an
 
 - Login por **número de telefone** + termos/privacidade
 - Abas: **Financeiro**, **Calendário**, **Destaques**, **Vídeos**
-- **Calendário:** eventos (liga, treino, amistoso) com categoria (Masculino, Feminino, Sub-20)
+- **Calendário:** eventos (liga, treino, amistoso) com categoria (Masculino, Feminino)
 - **Presença no treino:** Eu vou / Não vou + lista de confirmados (nome, posição)
 - **Vídeos:** canal oficial
 - **Destaques** e **Financeiro:** placeholder no export — a definir

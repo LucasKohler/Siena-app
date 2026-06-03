@@ -53,7 +53,7 @@ Login observado no Stitch: **número de telefone** (detalhes de OTP em ADR-0002)
 
 ### Calendário
 
-- Filtro por categoria: Masculino, Feminino, Sub-20
+- Filtro por categoria: Masculino, Feminino
 - Grade mensal + lista "Próximos Eventos"
 - Tipos observados: Liga Nacional, Treino Físico, Amistoso
 - Cada evento: data, horário, local (ex.: Ginásio Principal, Centro de Treinamento)
@@ -105,7 +105,6 @@ Ver [DESIGN.md](DESIGN.md): vermelho institucional **#E30613**, Inter, estética
 2. Provedor e fluxo de **OTP/SMS** (ADR-0002)
 3. Papéis no admin (quem edita calendário vs vídeos)
 4. Política de privacidade e termos (texto legal humano)
-5. Categorias além de Masculino / Feminino / Sub-20
 
 ---
 

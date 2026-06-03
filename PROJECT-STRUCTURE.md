@@ -59,10 +59,18 @@ Siena/
 │   │   └── tests/
 │   │       ├── Siena.Api.Tests/
 │   │       └── Siena.Application.Tests/
-│   ├── mobile/                        # React Native (fase 2)
-│   │   └── src/
-│   │       ├── features/
-│   │       └── core/
+│   ├── mobile/                        # Expo + Expo Router (Fase 3)
+│   │   ├── app/                       # rotas (login, tabs, treino, admin)
+│   │   ├── src/
+│   │   │   ├── api/
+│   │   │   ├── auth/
+│   │   │   ├── components/
+│   │   │   ├── features/
+│   │   │   ├── theme/
+│   │   │   └── utils/
+│   │   ├── __tests__/
+│   │   ├── package.json
+│   │   └── README.md
 │   └── admin-web/                     # futuro
 ├── docker-compose.yml
 ├── docker-compose.override.yml

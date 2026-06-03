@@ -108,9 +108,9 @@ public static class AdminEndpoints
         .ProducesProblem(StatusCodes.Status409Conflict);
 
         group.MapGet("/users", async (
-            bool includeInactive,
             IUserCommandService users,
-            CancellationToken cancellationToken) =>
+            CancellationToken cancellationToken,
+            bool includeInactive = false) =>
         {
             var result = await users.ListAsync(includeInactive, cancellationToken);
             return Results.Ok(result);

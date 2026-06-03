@@ -55,7 +55,7 @@ flowchart LR
 
 | Conceito | Observação no Stitch | API (implementado) |
 |----------|----------------------|-------------------|
-| Categoria | Masculino, Feminino, Sub-20 (UI) | **Masculino**, **Feminino** apenas (v1) |
+| Categoria | Masculino, Feminino | **Masculino**, **Feminino** |
 | Tipo de evento | Liga Nacional, Treino Físico, Amistoso | Enums + labels na resposta |
 | Data / hora | Ex.: 19:30, 08:00, 20:00 | `startsAt` (ISO 8601 com offset) |
 | Local | Ex.: Ginásio Principal, Centro de Treinamento, Fora de Casa | `location` |
