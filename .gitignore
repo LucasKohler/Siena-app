@@ -26,3 +26,9 @@ Thumbs.db
 # Build outputs
 dist/
 coverage/
+
+# PlanBroker ephemeral state (local orchestration)
+.cursor/plans/.watcher-state.json
+.cursor/plans/.pending-implementation.json
+.cursor/plans/.active-workspace
+.cursor/plans/.mcp-flow.pids

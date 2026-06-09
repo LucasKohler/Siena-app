@@ -1,23 +1,22 @@
 # AI Configuration — Siena Voleibol
 
-Workflow de engenharia assistida por IA para o hub interno A.E. Siena. Migrado do padrão **Portfolio** (`.agents/` + `AGENTS.md`); executado com **Claude Opus** + **Cursor AUTO**.
+Workflow de engenharia assistida por IA para o hub interno A.E. Siena. Adota a arquitetura de agentes do **Portfolio** (`.agents/` + `AGENTS.md`); executado com **Claude Opus** + **Cursor AUTO**.
 
 ---
 
 ## 1. Inventory — Portfolio AI setup (reference)
 
-The Portfolio repo used model-agnostic assets (not Codex/Copilot config files):
+The Portfolio repo used model-agnostic assets (not Codex/Copilot config files). **Siena now includes the same `.agents/` structure**, adapted for React Native + `Siena.slnx`:
 
 | Asset | Role |
 |-------|------|
 | `AGENTS.md` | Operational rules |
-| `AI_WORKFLOW.md` | Single vs multi-agent flows |
-| `AI_PROMPTS.md` | 16 phased implementation prompts |
 | `.agents/agents/*.toml` | Role definitions (explorer, architect, workers, reviewers) |
 | `.agents/prompts/*.md` | Reusable task prompts |
 | `.agents/skills/*/SKILL.md` | Structured workflows |
+| `AI-CONFIG.md` | This file — Opus/AUTO mapping and validation |
 
-Siena maps these to **AGENTS.md** + **AI-CONFIG.md** + **`.cursor/rules/`** + Opus/AUTO (no Grok-specific roles).
+Siena maps Portfolio multi-agent flows to **AGENTS.md** + **`.agents/`** + **`.cursor/rules/`** + Opus/AUTO (no Grok-specific roles).
 
 ---
 
@@ -82,15 +81,24 @@ For implementation requests:
 
 ## 4. Portfolio → Cursor mapping
 
-| Portfolio | Siena |
-|-----------|-------|
+| Portfolio / `.agents/` | Siena |
+|------------------------|-------|
 | `.agents/agents/explorer.toml` | Cursor `explore` or "map before edit" |
 | `.agents/agents/architect.toml` | Opus + ARCHITECTURE.md |
-| `backend-worker` | AUTO scoped to `apps/api/` |
-| `frontend-worker` | AUTO scoped to `apps/mobile/` |
-| `qa-reviewer` | TESTING.md checklist |
-| `security-reviewer` | SECURITY.md + ADR-0002 |
-| `AI_PROMPTS.md` | Phased prompts when backend/mobile work starts |
+| `backend-worker.toml` | AUTO scoped to `apps/api/` — validate with `Siena.slnx` |
+| `frontend-worker.toml` | AUTO scoped to `apps/mobile/` — validate with typecheck + test |
+| `qa-reviewer.toml` | TESTING.md checklist |
+| `security-reviewer.toml` | SECURITY.md + ADR-0002 |
+| `pr-reviewer.toml` | PR review before merge (read-only) |
+| `.agents/prompts/*.md` | Reusable prompts for plans, endpoints, reviews |
+| `.agents/skills/*/SKILL.md` | Composed workflows (feature-delivery, pr-review, etc.) |
+
+### Como usar os assets de `.agents/`
+
+1. **Roles (`agents/*.toml`)** — leia `developer_instructions` e `sandbox_mode` antes de invocar subagentes ou simular roles no Cursor. Workers exigem escopo aprovado e `workspace-write`.
+2. **Prompts (`prompts/*.md`)** — copie o bloco "Reusable Prompt" em planos Opus ou tarefas AUTO; use variantes `multi-agent-*` para features e reviews não triviais.
+3. **Skills (`skills/*/SKILL.md`)** — composição de explorer → architect/qa/security → aprovação humana → worker; não rode workers em paralelo no mesmo write-set.
+4. **Validação** — backend: `dotnet build/test apps/api/Siena.slnx`; mobile: `cd apps/mobile && npm run typecheck && npm test` (ver seção 7).
 
 ---
 
@@ -137,7 +145,7 @@ dotnet test apps/api/Siena.slnx
 **Mobile (when exists):**
 
 ```bash
-cd apps/mobile && npm run lint && npm test
+cd apps/mobile && npm run typecheck && npm test
 ```
 
 **Docker:**

@@ -1,0 +1,13 @@
+{
+  "mcpAllowlist": [
+    "plan-broker:publish_plan",
+    "plan-broker:get_latest_plan",
+    "plan-broker:list_plans",
+    "plan-broker:get_plan"
+  ],
+  "autoRun": {
+    "allow_instructions": [
+      "PlanBroker MCP tools for reading and publishing implementation plans from Grok Build orchestration flow."
+    ]
+  }
+}

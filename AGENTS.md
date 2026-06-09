@@ -70,7 +70,7 @@ Antes de implementar ou alterar comportamento:
 | 2 | `ARCHITECTURE.md`, `DOMAIN.md`, `PRODUCT.md`, `docs/OVERENGINEERING.md` |
 | 3 | `DESIGN.md` |
 | 4 | `CODING_STANDARDS.md`, `TESTING.md`, `SECURITY.md` |
-| 5 | `AI-CONFIG.md` |
+| 5 | `AI-CONFIG.md`, `.agents/` (roles, prompts, skills) |
 | 6 | `docs/architecture/adrs/` |
 | 7 | Export Stitch (`stitch_siena_voleibol_digital_hub/`) — referência visual apenas |
 
@@ -131,6 +131,8 @@ Mais de duas áreas → sugerir PRs separados.
 6. Validar (`dotnet build/test`, lint mobile quando aplicável)
 7. Atualizar docs no mesmo PR se comportamento mudou
 8. Reportar o que **não** foi validado
+
+Para tarefas multi-agente ou write-heavy, use definições em `.agents/agents/*.toml`, prompts em `.agents/prompts/` e workflows em `.agents/skills/` (ver [AI-CONFIG.md](AI-CONFIG.md)).
 
 ---
 
