@@ -14,8 +14,8 @@ Fonte única de verdade para agentes de IA e para a equipe. Leia este arquivo an
 | Canal principal | App **React Native** (TypeScript) |
 | Backend | **.NET LTS** / ASP.NET Core — desenvolvido **primeiro** |
 | Admin | App mobile admin + **painel admin web** simples (mesma API) |
-| Visual | [DESIGN.md](DESIGN.md) (export Stitch) |
-| IA | **Claude Opus** (planejamento) + **Cursor AUTO** (execução) — ver [AI-CONFIG.md](AI-CONFIG.md) |
+| Visual | [DESIGN.md](docs/product/DESIGN.md) (export Stitch) |
+| IA | **Claude Opus** (planejamento) + **Cursor AUTO** (execução) — ver [AI-CONFIG.md](docs/ai/AI-CONFIG.md) |
 
 ### Funcionalidades (observadas no Stitch)
 
@@ -27,7 +27,7 @@ Fonte única de verdade para agentes de IA e para a equipe. Leia este arquivo an
 - **Destaques** e **Financeiro:** placeholder no export — a definir
 - **Admin:** gestão de conteúdo (mobile + web)
 
-Detalhes de domínio: [DOMAIN.md](DOMAIN.md). Visão de produto: [PRODUCT.md](PRODUCT.md).
+Detalhes de domínio: [DOMAIN.md](docs/architecture/DOMAIN.md). Visão de produto: [PRODUCT.md](docs/product/PRODUCT.md).
 
 ### Fora de escopo (não aplicar a este projeto)
 
@@ -67,12 +67,14 @@ Antes de implementar ou alterar comportamento:
 | Prioridade | Documento |
 |------------|-----------|
 | 1 | `AGENTS.md` (este arquivo) |
-| 2 | `ARCHITECTURE.md`, `DOMAIN.md`, `PRODUCT.md`, `docs/OVERENGINEERING.md` |
-| 3 | `DESIGN.md` |
-| 4 | `CODING_STANDARDS.md`, `TESTING.md`, `SECURITY.md` |
-| 5 | `AI-CONFIG.md`, `.agents/` (roles, prompts, skills) |
+| 2 | [ARCHITECTURE.md](docs/architecture/ARCHITECTURE.md), [DOMAIN.md](docs/architecture/DOMAIN.md), [PRODUCT.md](docs/product/PRODUCT.md), [OVERENGINEERING.md](docs/architecture/OVERENGINEERING.md) |
+| 3 | [DESIGN.md](docs/product/DESIGN.md) |
+| 4 | [CODING_STANDARDS.md](docs/process/CODING_STANDARDS.md), [TESTING.md](docs/process/TESTING.md), [SECURITY.md](SECURITY.md) |
+| 5 | [AI-CONFIG.md](docs/ai/AI-CONFIG.md), `.agents/` (roles, prompts, skills) |
 | 6 | `docs/architecture/adrs/` |
 | 7 | Export Stitch (`stitch_siena_voleibol_digital_hub/`) — referência visual apenas |
+
+Índice completo da documentação: [docs/ai/README.md](docs/ai/README.md).
 
 ---
 
@@ -80,14 +82,14 @@ Antes de implementar ou alterar comportamento:
 
 ```txt
 apps/api/       → Siena.Api, Application, Domain, Infrastructure
-apps/mobile/    → React Native + TypeScript (após backend)
+apps/mobile/    → React Native + TypeScript (Expo)
 apps/admin-web/ → painel admin simples (futuro, mesma API)
 ```
 
-- **Clean Architecture pragmática** no backend (ver [ARCHITECTURE.md](ARCHITECTURE.md))
+- **Clean Architecture pragmática** no backend (ver [ARCHITECTURE.md](docs/architecture/ARCHITECTURE.md))
 - Backend é **fonte de verdade**; mobile não duplica catálogos
 - Dados: **PostgreSQL** + EF Core ([ADR-0003](docs/architecture/adrs/ADR-0003-persistencia-postgresql.md)); Docker Compose (API + banco)
-- Proporcionalidade: [docs/OVERENGINEERING.md](docs/OVERENGINEERING.md)
+- Proporcionalidade: [OVERENGINEERING.md](docs/architecture/OVERENGINEERING.md)
 
 Versões: .NET LTS; Node LTS para React Native. Sem preview/canary sem aprovação.
 
@@ -99,7 +101,7 @@ Versões: .NET LTS; Node LTS para React Native. Sem preview/canary sem aprovaç�
 2. **Domínio no centro** — regras em Domain/Application; HTTP e persistência nas bordas.
 3. **DTOs explícitos** na API; Domain sem ASP.NET.
 4. **Monólito modular** — sem microserviços.
-5. **Testes que importam** — contratos de endpoint, validação, fluxos críticos (ver [TESTING.md](TESTING.md)).
+5. **Testes que importam** — contratos de endpoint, validação, fluxos críticos (ver [TESTING.md](docs/process/TESTING.md)).
 6. **ADRs** para decisões relevantes (auth OTP, banco, libs novas).
 7. **LGPD** — telefone e dados de atletas; ver [SECURITY.md](SECURITY.md).
 
@@ -128,11 +130,11 @@ Mais de duas áreas → sugerir PRs separados.
 3. **Opus:** plano + riscos + validação (features não triviais)
 4. Aprovação humana para write-heavy
 5. **AUTO:** implementar incrementalmente
-6. Validar (`dotnet build/test`, lint mobile quando aplicável)
+6. Validar (`dotnet build/test`, `npm run typecheck && npm test` no mobile quando aplicável)
 7. Atualizar docs no mesmo PR se comportamento mudou
 8. Reportar o que **não** foi validado
 
-Para tarefas multi-agente ou write-heavy, use definições em `.agents/agents/*.toml`, prompts em `.agents/prompts/` e workflows em `.agents/skills/` (ver [AI-CONFIG.md](AI-CONFIG.md)).
+Para tarefas multi-agente ou write-heavy, use definições em `.agents/agents/*.toml`, prompts em `.agents/prompts/` e workflows em `.agents/skills/` (ver [AI-CONFIG.md](docs/ai/AI-CONFIG.md)).
 
 ---
 
@@ -142,7 +144,7 @@ Para tarefas multi-agente ou write-heavy, use definições em `.agents/agents/*.
 - Dados falsos de atletas, presenças ou eventos em produção
 - Microserviços, CQRS/Saga/event-bus sem ADR aprovado
 - Secrets em código, Docker ou markdown
-- Ignorar `DESIGN.md` em mudanças de UI
+- Ignorar [DESIGN.md](docs/product/DESIGN.md) em mudanças de UI
 
 ---
 

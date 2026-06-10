@@ -2,7 +2,7 @@
 
 Arquitetura do hub digital interno da **A.E. Siena**. Referência de engenharia: monorepo **Portfolio** (Clean Architecture pragmática). Referência de produto: export Google Stitch (`stitch_siena_voleibol_digital_hub.zip`).
 
-> **Escala:** ~40 usuários internos, tráfego leve. **Simplicidade** é requisito, não opcional. Ver [docs/OVERENGINEERING.md](docs/OVERENGINEERING.md).
+> **Escala:** ~40 usuários internos, tráfego leve. **Simplicidade** é requisito, não opcional. Ver [OVERENGINEERING.md](OVERENGINEERING.md).
 
 ---
 
@@ -12,19 +12,19 @@ Arquitetura do hub digital interno da **A.E. Siena**. Referência de engenharia:
 |------|-------|
 | App | Siena Voleibol — gestão e desempenho do time |
 | Users | Atletas, comissão, admin (~40) |
-| Mobile | React Native + TypeScript ([ADR-0001](docs/architecture/adrs/ADR-0001-mobile-stack.md)) |
+| Mobile | React Native + TypeScript ([ADR-0001](adrs/ADR-0001-mobile-stack.md)) |
 | Backend | .NET LTS, ASP.NET Core — **desenvolvido primeiro** |
 | Admin | Painel web simples + admin mobile (mesma API) |
-| Design | [DESIGN.md](DESIGN.md) |
+| Design | [DESIGN.md](../product/DESIGN.md) |
 
 ### Features (from Stitch)
 
-- Login por telefone ([ADR-0002](docs/architecture/adrs/ADR-0002-autenticacao-telefone.md) — Accepted)
+- Login por telefone ([ADR-0002](adrs/ADR-0002-autenticacao-telefone.md) — Accepted)
 - Tabs: Financeiro (*a definir*), Calendário, Destaques (*a definir*), Vídeos
 - Presença no treino (Eu vou / Não vou)
 - Admin (mobile + web)
 
-Ver [PRODUCT.md](PRODUCT.md) e [DOMAIN.md](DOMAIN.md).
+Ver [PRODUCT.md](../product/PRODUCT.md) e [DOMAIN.md](DOMAIN.md).
 
 ### Explicitly out of scope
 
@@ -107,12 +107,12 @@ Application -> Domain
 Domain -> (none outward)
 ```
 
-### Endpoint groups (planned — spec before code)
+### Endpoint groups (implementados)
 
 | Group | Purpose |
 |-------|---------|
 | Health | Liveness |
-| Auth | Login JWT + allowlist ([ADR-0002](docs/architecture/adrs/ADR-0002-autenticacao-telefone.md)) |
+| Auth | Login JWT + allowlist ([ADR-0002](adrs/ADR-0002-autenticacao-telefone.md)) |
 | Events | Calendar |
 | Attendance | Training presence |
 | Videos | Official channel list |
@@ -123,7 +123,7 @@ Domain -> (none outward)
 ## Mobile
 
 - Feature folders: `auth`, `calendar`, `attendance`, `videos`, etc.
-- Theme from [DESIGN.md](DESIGN.md) (`#E30613`, Inter)
+- Theme from [DESIGN.md](../product/DESIGN.md) (`#E30613`, Inter)
 - API client typed to backend DTOs
 - Bottom tabs matching Stitch: Financeiro, Calendário, Destaques, Vídeos
 
@@ -131,11 +131,11 @@ Domain -> (none outward)
 
 ## Data strategy
 
-1. **Atual:** **PostgreSQL** + EF Core — [ADR-0003](docs/architecture/adrs/ADR-0003-persistencia-postgresql.md); seed via `DatabaseSeeder`
+1. **Atual:** **PostgreSQL** + EF Core — [ADR-0003](adrs/ADR-0003-persistencia-postgresql.md); seed via `DatabaseSeeder`
 2. **Dev:** `docker-compose.yml` (API + PostgreSQL)
 3. **Testes:** SQLite in-memory via `Persistence:Provider=Sqlite`
-4. **Legado:** JSON em `Infrastructure/Data/` — remover ao tocar; não é persistência primária
-5. **PII:** phone, attendance — revisão LGPD humana antes de produção ([SECURITY.md](SECURITY.md))
+4. **Legado:** repositórios JSON removidos ([ADR-0003](adrs/ADR-0003-persistencia-postgresql.md)); EF Core + PostgreSQL é a fonte de verdade
+5. **PII:** phone, attendance — revisão LGPD humana antes de produção ([SECURITY.md](../../SECURITY.md))
 
 ---
 
@@ -154,7 +154,7 @@ Domain -> (none outward)
 - DTOs at API boundary; serviços explícitos (sem MediatR por padrão)
 - ADR before: new database, auth provider, messaging layer or major lib
 - Preserve API contracts unless breaking change approved
-- Proporcionalidade: [docs/OVERENGINEERING.md](docs/OVERENGINEERING.md)
+- Proporcionalidade: [OVERENGINEERING.md](OVERENGINEERING.md)
 
 ---
 
@@ -174,9 +174,10 @@ Domain -> (none outward)
 
 | ADR | Topic |
 |-----|-------|
-| [0001](docs/architecture/adrs/ADR-0001-mobile-stack.md) | React Native — Accepted |
-| [0002](docs/architecture/adrs/ADR-0002-autenticacao-telefone.md) | Phone auth / JWT — Accepted |
-| [0003](docs/architecture/adrs/ADR-0003-persistencia-postgresql.md) | PostgreSQL + EF Core — Accepted |
+| [0001](adrs/ADR-0001-mobile-stack.md) | React Native — Accepted |
+| [0002](adrs/ADR-0002-autenticacao-telefone.md) | Phone auth / JWT — Accepted |
+| [0003](adrs/ADR-0003-persistencia-postgresql.md) | PostgreSQL + EF Core — Accepted |
+| [0004](adrs/ADR-0004-mobile-expo-router.md) | Mobile Expo Router — Accepted |
 | TBD | Admin web stack |
 | TBD | Financeiro / Destaques when specced |
 

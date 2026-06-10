@@ -56,7 +56,7 @@ For a **simple internal app (~40 users)**, apply rigor **without enterprise cere
 - Step-by-step reasoning when the task is non-trivial
 - **Mermaid** diagrams for architecture or flows when they add clarity
 - Short trade-off notes when choosing between 2–3 options
-- Production-ready code: validated, tested where it matters, aligned with [CODING_STANDARDS.md](CODING_STANDARDS.md)
+- Production-ready code: validated, tested where it matters, aligned with [CODING_STANDARDS.md](../process/CODING_STANDARDS.md)
 - Honest placeholders for Financeiro/Destaques until specced
 
 ### Do not
@@ -84,11 +84,11 @@ For implementation requests:
 | Portfolio / `.agents/` | Siena |
 |------------------------|-------|
 | `.agents/agents/explorer.toml` | Cursor `explore` or "map before edit" |
-| `.agents/agents/architect.toml` | Opus + ARCHITECTURE.md |
+| `.agents/agents/architect.toml` | Opus + `docs/architecture/ARCHITECTURE.md` |
 | `backend-worker.toml` | AUTO scoped to `apps/api/` — validate with `Siena.slnx` |
 | `frontend-worker.toml` | AUTO scoped to `apps/mobile/` — validate with typecheck + test |
-| `qa-reviewer.toml` | TESTING.md checklist |
-| `security-reviewer.toml` | SECURITY.md + ADR-0002 |
+| `qa-reviewer.toml` | `docs/process/TESTING.md` checklist |
+| `security-reviewer.toml` | `SECURITY.md` (raiz) + ADR-0002 |
 | `pr-reviewer.toml` | PR review before merge (read-only) |
 | `.agents/prompts/*.md` | Reusable prompts for plans, endpoints, reviews |
 | `.agents/skills/*/SKILL.md` | Composed workflows (feature-delivery, pr-review, etc.) |
@@ -99,6 +99,22 @@ For implementation requests:
 2. **Prompts (`prompts/*.md`)** — copie o bloco "Reusable Prompt" em planos Opus ou tarefas AUTO; use variantes `multi-agent-*` para features e reviews não triviais.
 3. **Skills (`skills/*/SKILL.md`)** — composição de explorer → architect/qa/security → aprovação humana → worker; não rode workers em paralelo no mesmo write-set.
 4. **Validação** — backend: `dotnet build/test apps/api/Siena.slnx`; mobile: `cd apps/mobile && npm run typecheck && npm test` (ver seção 7).
+
+### Camada Cursor-native (auto-descoberta)
+
+Além dos assets em `.agents/`, o repositório inclui integração **nativa do Cursor**:
+
+| Mecanismo | Caminho | O que dispara |
+|-----------|---------|---------------|
+| Skill de orquestração | `.cursor/skills/siena-orchestration/SKILL.md` | Auto-invocável quando o agente detecta implementação de feature, multi-agent, reviews ou menção a roles (`explorer`, `backend-worker`, etc.) |
+| Rule backend | `.cursor/rules/backend-dotnet.mdc` | Ao editar `apps/api/**` — manda ler `backend-worker.toml` |
+| Rule mobile | `.cursor/rules/mobile-app.mdc` | Ao editar `apps/mobile/**` — manda ler `frontend-worker.toml` |
+
+**O que dispara sozinho:** a skill (via `description`) e as rules (via glob de arquivo).
+
+**O que ainda exige ação explícita:** subagente `Task` + `explore` para discovery read-only com sandbox real; workers (`backend-worker` / `frontend-worker`) após aprovação humana; PlanBroker MCP para `get_plan` / `publish_plan`.
+
+**Fonte canônica:** `.agents/agents/*.toml` — a skill e as rules **referenciam** os tomls, não os substituem.
 
 ---
 
@@ -112,6 +128,7 @@ For implementation requests:
 | `backend-dotnet.mdc` | `apps/api/**` |
 | `mobile-app.mdc` | `apps/mobile/**` |
 | `documentation.mdc` | `**/*.md` |
+| `plan-orchestration.md` | PlanBroker → implementação (sob demanda) |
 
 ---
 
@@ -127,7 +144,7 @@ For larger changes:
 6. Document validation
 
 ```txt
-Review Siena against AGENTS.md and ARCHITECTURE.md in read-only mode.
+Review Siena against AGENTS.md and docs/architecture/ARCHITECTURE.md in read-only mode.
 Return findings by severity with file paths. State what was not validated.
 ```
 
@@ -142,7 +159,7 @@ dotnet build apps/api/Siena.slnx
 dotnet test apps/api/Siena.slnx
 ```
 
-**Mobile (when exists):**
+**Mobile:**
 
 ```bash
 cd apps/mobile && npm run typecheck && npm test
@@ -164,18 +181,18 @@ git diff --check && git status --short
 
 ## 8. Commits and PRs
 
-See [CONTRIBUTING.md](CONTRIBUTING.md). PRs must note Opus/AUTO usage and command results.
+See [CONTRIBUTING.md](../../CONTRIBUTING.md). PRs must note Opus/AUTO usage and command results.
 
 ---
 
 ## 9. Decision hierarchy
 
 ```txt
-1. AGENTS.md
-2. ARCHITECTURE.md / DOMAIN.md / PRODUCT.md
-3. DESIGN.md
-4. CODING_STANDARDS.md / TESTING.md / SECURITY.md
-5. AI-CONFIG.md (this file)
+1. AGENTS.md (raiz)
+2. docs/architecture/ARCHITECTURE.md, DOMAIN.md; docs/product/PRODUCT.md
+3. docs/product/DESIGN.md
+4. docs/process/CODING_STANDARDS.md, TESTING.md; SECURITY.md (raiz)
+5. docs/ai/AI-CONFIG.md (this file)
 6. docs/architecture/adrs/
 7. Stitch export (visual only)
 ```

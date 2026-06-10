@@ -17,10 +17,12 @@ Referências: [ADR-0001](docs/architecture/adrs/ADR-0001-mobile-stack.md) (RN), 
 | Documento | Conteúdo |
 |-----------|----------|
 | [AGENTS.md](AGENTS.md) | Regras para agentes e desenvolvedores |
-| [ARCHITECTURE.md](ARCHITECTURE.md) | Camadas e decisões |
-| [PRODUCT.md](PRODUCT.md) / [DOMAIN.md](DOMAIN.md) | Produto e domínio |
-| [DESIGN.md](DESIGN.md) | Identidade visual (Stitch) |
-| [MIGRATION-PLAN.md](MIGRATION-PLAN.md) | Fases do projeto |
+| [docs/architecture/ARCHITECTURE.md](docs/architecture/ARCHITECTURE.md) | Camadas e decisões |
+| [docs/product/PRODUCT.md](docs/product/PRODUCT.md) / [docs/architecture/DOMAIN.md](docs/architecture/DOMAIN.md) | Produto e domínio |
+| [docs/product/DESIGN.md](docs/product/DESIGN.md) | Identidade visual (Stitch) |
+| [docs/ai/AI-CONFIG.md](docs/ai/AI-CONFIG.md) | Workflow IA (Opus + Cursor) |
+| [docs/ai/README.md](docs/ai/README.md) | Índice de assets `.agents/` e skills |
+| [docs/history/MIGRATION-PLAN.md](docs/history/MIGRATION-PLAN.md) | Log histórico de fases |
 | [apps/mobile/README.md](apps/mobile/README.md) | App mobile (Expo) |
 
 ## Pré-requisitos
@@ -141,7 +143,7 @@ docker-compose.yml
 .cursor/rules/
 ```
 
-Detalhes: [PROJECT-STRUCTURE.md](PROJECT-STRUCTURE.md).
+Detalhes: [docs/history/PROJECT-STRUCTURE.md](docs/history/PROJECT-STRUCTURE.md) (histórico; estrutura canônica acima).
 
 ## Próximas fatias
 
@@ -149,4 +151,4 @@ Detalhes: [PROJECT-STRUCTURE.md](PROJECT-STRUCTURE.md).
 - Admin web simples (Fase 4)
 - OTP/SMS em produção ([ADR-0002](docs/architecture/adrs/ADR-0002-autenticacao-telefone.md))
 
-Ver [MIGRATION-PLAN.md](MIGRATION-PLAN.md).
+Ver [docs/history/MIGRATION-PLAN.md](docs/history/MIGRATION-PLAN.md).

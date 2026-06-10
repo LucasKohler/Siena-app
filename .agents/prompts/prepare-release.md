@@ -12,7 +12,7 @@ Use before tagging, deploying or presenting the project publicly.
 
 ```txt
 Prepare this repository for release. Review docs, environment variables,
-frontend build, backend build/tests, Docker config, security notes and known
+backend and mobile validation, Docker config, security notes and known
 risks. Do not deploy unless explicitly asked. Return a release checklist with
 commands run and unresolved items.
 ```
@@ -20,8 +20,8 @@ commands run and unresolved items.
 ## Checklist
 
 - Check git status.
-- Run backend validation.
-- Run frontend validation.
+- Run backend validation: `dotnet build apps/api/Siena.slnx` and `dotnet test apps/api/Siena.slnx`.
+- Run mobile validation: `cd apps/mobile && npm run typecheck && npm test`.
 - Validate Docker if available.
 - Review docs and environment variables.
 - List known risks.

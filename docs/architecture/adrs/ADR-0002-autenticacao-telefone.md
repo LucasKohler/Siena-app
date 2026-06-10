@@ -54,7 +54,7 @@ Textos legais (termos + privacidade): conteúdo humano pendente; mobile pode exi
 
 - Allowlist DEV via `DatabaseSeeder` (PostgreSQL) — não reutilizar dados de seed em produção.
 - Chave JWT via `Jwt__SigningKey` (env); nunca commitar valor real de produção.
-- Presença no treino pode usar auth na próxima fatia.
+- Presença no treino exige auth (`POST /api/trainings/{id}/attendance` com Bearer token) — implementado.
 - OTP exigirá ADR amendment ou ADR filha quando provedor for escolhido.
 
 ## Validation Plan

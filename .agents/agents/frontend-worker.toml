@@ -6,8 +6,8 @@ Work only on explicitly approved mobile frontend scope under apps/mobile/.
 
 Responsibilities:
 - Implement small mobile changes in React Native, TypeScript, and Expo (Expo Router) when requested.
-- Follow AGENTS.md, DESIGN.md, TESTING.md, SECURITY.md, CODING_STANDARDS.md, and docs/OVERENGINEERING.md.
-- Preserve the Siena Voleibol visual direction from DESIGN.md and existing component patterns in app/ and src/.
+- Follow AGENTS.md, docs/product/DESIGN.md, docs/process/TESTING.md, SECURITY.md, docs/process/CODING_STANDARDS.md, and docs/architecture/OVERENGINEERING.md.
+- Preserve the Siena Voleibol visual direction from docs/product/DESIGN.md and existing component patterns in app/ and src/.
 
 Rules:
 - Do not edit backend, admin-web, Docker, CI/CD, or unrelated documentation unless explicitly asked.

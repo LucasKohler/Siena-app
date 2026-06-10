@@ -12,7 +12,7 @@
 
 O Siena (~40 usuários internos) iniciou com repositórios JSON em `Infrastructure/Data/` (padrão Portfolio). Com auth (allowlist), presença mutável (`attendances.json`) e deploy previsto em **multi-instância / cloud**, arquivos JSON não são adequados para produção (concorrência, backup, PII).
 
-[ARCHITECTURE.md](../../../ARCHITECTURE.md) prevê: v0 JSON → v1 banco relacional simples com ADR.
+[ARCHITECTURE.md](../ARCHITECTURE.md) prevê: v0 JSON → v1 banco relacional simples com ADR.
 
 ## Decision
 
@@ -25,7 +25,7 @@ Adotar **PostgreSQL** como banco de produção e **EF Core** com provider **Npgs
 5. **Testes:** SQLite (arquivo temporário) via `ConnectionStrings:Default` + `Persistence:Provider=Sqlite` no `WebApplicationFactory` — sem exigir Docker Postgres na CI local.
 6. **Docker Compose:** serviço `postgres` com healthcheck; API recebe `ConnectionStrings__Default`.
 
-JSON em `Data/` permanece como referência/legado de seed; **não** é mais a fonte de verdade em runtime.
+JSON legado em `Infrastructure/Data/` **removido**; EF Core + PostgreSQL é a única fonte de verdade em runtime.
 
 ## Options Considered
 
@@ -66,7 +66,7 @@ Fora do escopo ou desproporcional para o tamanho do projeto.
 
 ## Rollback Plan
 
-Reverter DI para repositórios JSON e remover `AddDbContext`; manter migrations no histórico git.
+Reverter DI para implementações anteriores exigiria ADR e migration de dados; repositórios JSON não existem mais no código.
 
 ## Human Approval Required
 

@@ -4,9 +4,10 @@ globs: apps/mobile/**
 ---
 
 - Stack: **Expo (managed) + Expo Router** — ver [ADR-0004](../../docs/architecture/adrs/ADR-0004-mobile-expo-router.md).
-- DESIGN.md / Stitch: `#e30613`, `#fbf9f8`, Inter.
+- DESIGN.md / Stitch: `#e30613`, `#fbf9f8`, Inter — ver [docs/product/DESIGN.md](../../docs/product/DESIGN.md).
 - Backend é fonte de verdade; sem catálogos hardcoded em produção.
 - Feature folders: `auth`, `calendar`, `attendance`, `videos`, `finance`, `admin`.
 - Bottom tabs v1: **Financeiro** (placeholder UI), **Calendário**, **Vídeos** — Destaques adiado.
 - JWT em `expo-secure-store`; `EXPO_PUBLIC_API_URL` para a API.
 - Loading, empty e error em chamadas de API.
+- Mudanças não triviais: ler e obedecer [.agents/agents/frontend-worker.toml](../../.agents/agents/frontend-worker.toml) (`developer_instructions` + escopo `apps/mobile/`).

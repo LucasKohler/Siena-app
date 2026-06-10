@@ -16,7 +16,7 @@ Localização: `apps/api/tests/`
 | Calendário | listagem e detalhe de evento; 404 |
 | Presença | confirmação Eu vou/Não vou; validação |
 | Vídeos | listagem; shape do DTO |
-| Auth | fluxo OTP quando ADR-0002 implementado |
+| Auth | login allowlist + JWT (ADR-0002); OTP follow-up futuro |
 | OpenAPI | documento disponível |
 
 ### Libraries
@@ -34,18 +34,16 @@ dotnet test apps/api/Siena.slnx
 
 ---
 
-## Mobile (React Native)
+## Mobile (React Native + Expo)
 
-Quando `apps/mobile` existir:
+Em `apps/mobile/`:
 
 - Testes de parsing do cliente API
 - Testes de componente/widget para login, calendário, presença (fluxos críticos)
-- `npm test` / Jest conforme template do projeto
+- Jest + `@testing-library/react-native`
 
 ```bash
-cd apps/mobile
-npm run lint
-npm test
+cd apps/mobile && npm run typecheck && npm test
 ```
 
 E2E (Detox/Maestro): só se fluxos estabilizarem — ADR opcional.

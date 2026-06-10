@@ -9,4 +9,4 @@ This folder keeps model-agnostic AI workflow assets for the repository (adapted 
 
 These files are project guidance, not tool lock-in. Any coding assistant should
 read the root `AGENTS.md`, inspect the repository state and use only the assets
-that fit the current task. See `AI-CONFIG.md` for Opus/AUTO mapping and validation commands.
+that fit the current task. See docs/ai/AI-CONFIG.md for Opus/AUTO mapping and validation commands.

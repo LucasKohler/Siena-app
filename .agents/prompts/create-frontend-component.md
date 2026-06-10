@@ -12,7 +12,7 @@ Use when the mobile app needs a reusable component or screen section (e.g. prese
 
 ```txt
 Create the approved mobile component in the existing React Native + Expo structure under apps/mobile/.
-Follow DESIGN.md. Place screens/routes in app/ (Expo Router) and shared components in src/components/ or src/.
+Follow docs/product/DESIGN.md. Place screens/routes in app/ (Expo Router) and shared components in src/components/ or src/.
 Use TypeScript (.tsx). Do not introduce global state or new UI libraries without justification.
 Validate with `cd apps/mobile && npm run typecheck && npm test` when possible.
 ```
@@ -32,5 +32,5 @@ Component implementation, usage notes and validation results.
 ## Acceptance Criteria
 
 - Component is reusable and cohesive.
-- It follows the Siena Voleibol visual direction from DESIGN.md.
+- It follows the Siena Voleibol visual direction from docs/product/DESIGN.md.
 - No unnecessary client state or effects are introduced.

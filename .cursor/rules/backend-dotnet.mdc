@@ -10,4 +10,5 @@ globs: apps/api/**
 - Endpoints agrupados por área (events, attendance, videos, admin).
 - Validar requests; não vazar stack trace.
 - `dotnet build` e `dotnet test` na solution; reportar se não executados.
-- Proporcionalidade: `docs/OVERENGINEERING.md` — sem CQRS/Redis/K8s sem ADR.
+- Proporcionalidade: `docs/architecture/OVERENGINEERING.md` — sem CQRS/Redis/K8s sem ADR.
+- Mudanças não triviais: ler e obedecer [.agents/agents/backend-worker.toml](../../.agents/agents/backend-worker.toml) (`developer_instructions` + escopo `apps/api/`).

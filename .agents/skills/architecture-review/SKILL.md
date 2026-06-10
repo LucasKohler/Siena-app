@@ -81,4 +81,4 @@ Exija aprovacao humana para ADRs, mudancas de boundary, breaking changes, refato
 - Use `architect` como agente central.
 - Use `explorer` para evidencias.
 - Use `.agents/prompts/multi-agent-architecture-review.md` para orquestracao.
-- Consulte `ARCHITECTURE.md`, `DOMAIN.md`, `docs/OVERENGINEERING.md` e `AGENTS.md` como referencias normativas.
+- Consulte `docs/architecture/ARCHITECTURE.md`, `docs/architecture/DOMAIN.md`, `docs/architecture/OVERENGINEERING.md` e `AGENTS.md` como referencias normativas.

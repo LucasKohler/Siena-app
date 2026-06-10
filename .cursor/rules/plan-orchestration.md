@@ -23,10 +23,10 @@ Antes de editar qualquer arquivo:
 
 1. Obter o plano via MCP `plan-broker` → `get_plan(task_id)` ou `get_latest_plan()`.
 2. Se MCP não estiver disponível, ler `.cursor/plans/{task_id}.md` diretamente.
-3. Ler documentos de governança na raiz do projeto, **se existirem** (`AGENTS.md`, `ACCEPTANCE_CRITERIA.md`, `DESIGN.md`, etc.).
+3. Ler documentos de governança, **se existirem** (`AGENTS.md`, `docs/product/DESIGN.md`, `docs/architecture/ARCHITECTURE.md`, etc.).
 4. Listar os passos do plano e confirmar ordem de execução em uma mensagem curta ao usuário.
 
-**Guia completo do fluxo:** [`../../plan-broker/docs/PLAN_BROKER_GUIDE.md`](../../plan-broker/docs/PLAN_BROKER_GUIDE.md).
+**Guia completo do fluxo:** kit compartilhado em `C:\Users\lucas\Documents\Projects\plan-broker\docs\PLAN_BROKER_GUIDE.md` (fora do repo; ver também `~/mcp-servers/plan-broker/`).
 
 ## Padrões de implementação
 
@@ -34,11 +34,11 @@ Antes de editar qualquer arquivo:
 
 - Implemente **somente** o que o plano descreve.
 - Não invente endpoints, tabelas, métricas ou integrações não listadas.
-- Se o plano conflitar com `DESIGN.md` ou `ACCEPTANCE_CRITERIA.md` (quando existirem), pare e reporte o conflito antes de prosseguir.
+- Se o plano conflitar com `docs/product/DESIGN.md` ou `ACCEPTANCE_CRITERIA.md` (quando existirem), pare e reporte o conflito antes de prosseguir.
 
 ### Arquitetura
 
-- Respeite a arquitetura e convenções documentadas no projeto (`AGENTS.md`, `ARCHITECTURE.md`, etc.).
+- Respeite a arquitetura e convenções documentadas no projeto (`AGENTS.md`, `docs/architecture/ARCHITECTURE.md`, etc.).
 - Não duplique dados que já vêm de APIs ou fontes canônicas do projeto.
 
 ### Subagentes

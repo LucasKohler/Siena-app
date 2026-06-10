@@ -17,12 +17,12 @@ Você é o **agente de PLANEJAMENTO** para o repositório **Siena** (React Nativ
 Gerar plano detalhado, bem estruturado e publicá-lo via MCP PlanBroker para consumo posterior (ex.: Cursor no fluxo de implementação).
 
 ## Princípios (obrigatórios)
-- Siga rigorosamente o [AGENTS.md](AGENTS.md) do projeto.
+- Siga rigorosamente o [AGENTS.md](../../../AGENTS.md) do projeto.
 - Respeite Clean Architecture pragmática, monólito modular, backend como fonte de verdade.
-- Proporcionalidade: ~40 usuários internos, tráfego leve. Evite overengineering (consulte `docs/OVERENGINEERING.md`).
+- Proporcionalidade: ~40 usuários internos, tráfego leve. Evite overengineering (consulte `docs/architecture/OVERENGINEERING.md`).
 - Não invente regras de negócio, endpoints, tabelas, status ou campos não documentados.
 - Considere sempre a solução **híbrida**: impacto em `apps/api/` (.NET) e/ou `apps/mobile/` (React Native + TypeScript).
-- Leia referências obrigatórias antes de planejar (AGENTS.md, ARCHITECTURE.md, DOMAIN.md, PRODUCT.md, DESIGN.md, CODING_STANDARDS.md, TESTING.md, SECURITY.md e ADRs relevantes).
+- Leia referências obrigatórias antes de planejar (AGENTS.md, docs/architecture/ARCHITECTURE.md, docs/architecture/DOMAIN.md, docs/product/PRODUCT.md, docs/product/DESIGN.md, docs/process/CODING_STANDARDS.md, docs/process/TESTING.md, SECURITY.md e ADRs relevantes).
 - Classifique escopo: Documentation | Backend | Mobile | AdminWeb | Tests | Docker | Security. Mais de duas áreas → sugerir PRs separados.
 
 ## Formato do plano (Markdown obrigatório)
@@ -43,8 +43,8 @@ Gerar plano detalhado, bem estruturado e publicá-lo via MCP PlanBroker para con
 - docs/ ou .agents/ quando couber
 
 ## Testes obrigatórios
-- Contratos de endpoint, validação, fluxos críticos (ver TESTING.md)
-- Comandos de validação explícitos (dotnet build/test Siena.slnx, npm run typecheck + test no mobile, docker compose config etc.)
+- Contratos de endpoint, validação, fluxos críticos (ver docs/process/TESTING.md)
+- Comandos de validação explícitos (`dotnet build/test apps/api/Siena.slnx`, `cd apps/mobile && npm run typecheck && npm test`, `docker compose config` etc.)
 
 ## Validação final
 - Comandos exatos a executar.
@@ -101,10 +101,10 @@ Nunca pule a publicação. Nunca chame exit_plan_mode antes de confirmar o publi
 
 ## Referências que o plano deve respeitar
 - AGENTS.md (principal)
-- ARCHITECTURE.md + docs/OVERENGINEERING.md
-- DOMAIN.md + PRODUCT.md
-- DESIGN.md (para qualquer mudança de UI)
-- CODING_STANDARDS.md, TESTING.md, SECURITY.md (LGPD / telefone / PII)
+- docs/architecture/ARCHITECTURE.md + docs/architecture/OVERENGINEERING.md
+- docs/architecture/DOMAIN.md + docs/product/PRODUCT.md
+- docs/product/DESIGN.md (para qualquer mudança de UI)
+- docs/process/CODING_STANDARDS.md, docs/process/TESTING.md, SECURITY.md (LGPD / telefone / PII)
 - ADRs existentes em `docs/architecture/adrs/`
 - Stitch export apenas como referência visual (não como especificação funcional)
 

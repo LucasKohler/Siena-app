@@ -23,7 +23,7 @@ apps/api/src/
   Siena.Api/           → Endpoints, Program.cs, CORS, OpenAPI
   Siena.Application/   → Services, DTOs, interfaces
   Siena.Domain/        → Entities, enums (sem ASP.NET)
-  Siena.Infrastructure/→ Repositories, JSON/DB, SMS (futuro)
+  Siena.Infrastructure/→ Repositories, EF Core/PostgreSQL, SMS (futuro)
 apps/api/tests/
   Siena.Api.Tests/
   Siena.Application.Tests/
@@ -72,10 +72,10 @@ apps/mobile/src/
 ### Rules
 
 - TypeScript strict
-- Tema: vermelho `#E30613`, fundo `#F8F8F8`, Inter — [DESIGN.md](DESIGN.md)
+- Tema: vermelho `#E30613`, fundo `#F8F8F8`, Inter — [DESIGN.md](../product/DESIGN.md)
 - Dados de listas vêm da API; sem catálogo hardcoded em produção
 - Estados de loading, empty e error em telas de rede
-- Client Components / hooks apenas onde necessário; evitar estado global prematuro
+- Hooks e estado local apenas onde necessário; evitar estado global prematuro
 
 ---
 
@@ -90,7 +90,7 @@ apps/mobile/src/
 ## Documentation
 
 - XML docs em APIs públicas do backend quando útil
-- Atualizar `DOMAIN.md` / `ARCHITECTURE.md` se contrato ou comportamento mudar
+- Atualizar [DOMAIN.md](../architecture/DOMAIN.md) / [ARCHITECTURE.md](../architecture/ARCHITECTURE.md) se contrato ou comportamento mudar
 - ADR para decisões não óbvias
 
 ---

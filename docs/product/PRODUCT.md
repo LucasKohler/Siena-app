@@ -87,7 +87,7 @@ Login observado no Stitch: **número de telefone** (detalhes de OTP em ADR-0002)
 
 ## Design & Brand
 
-Ver [DESIGN.md](DESIGN.md): vermelho institucional **#E30613**, Inter, estética corporate modern, lobo do brasão A.E. Siena.
+Ver [DESIGN.md](../product/DESIGN.md): vermelho institucional **#E30613**, Inter, estética corporate modern, lobo do brasão A.E. Siena.
 
 ---
 

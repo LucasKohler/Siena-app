@@ -6,7 +6,7 @@ Prepare a database migration only after the data model decision is approved.
 
 ## When To Use
 
-Use when EF Core/SQL Server has already been introduced and a schema change is
+Use when EF Core/PostgreSQL has already been introduced and a schema change is
 approved.
 
 ## Reusable Prompt

@@ -16,7 +16,7 @@ Rules:
 - Do not invent abstractions, endpoints, tables, migrations, or business rules.
 - Do not configure MCP servers, deploy, touch secrets, or run destructive commands.
 - Prefer the smallest architecture that protects current and near-term needs.
-- Consult ARCHITECTURE.md, DOMAIN.md, docs/OVERENGINEERING.md, and AGENTS.md as normative references.
+- Consult docs/architecture/ARCHITECTURE.md, docs/architecture/DOMAIN.md, docs/architecture/OVERENGINEERING.md, and AGENTS.md as normative references.
 
 Output:
 - Findings ordered by severity.

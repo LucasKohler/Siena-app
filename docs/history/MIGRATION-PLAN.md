@@ -2,7 +2,7 @@
 
 Plano de migração de **documentação e disciplina de engenharia** do Portfolio para o hub interno **A.E. Siena**, com produto definido pelo export **Stitch** (`stitch_siena_voleibol_digital_hub.zip`).
 
-> **Sem código ainda.** Backend será o primeiro código. Mobile: React Native.
+> **Backend e mobile em implementação.** Log histórico da migração Portfolio → Siena; estrutura atual: [README.md](../../README.md) e [docs/architecture/ARCHITECTURE.md](../architecture/ARCHITECTURE.md).
 
 ---
 
@@ -52,7 +52,7 @@ Plano de migração de **documentação e disciplina de engenharia** do Portfoli
 - [x] `AGENTS.md`, `PRODUCT.md`, `DOMAIN.md`, `DESIGN.md`
 - [x] `CODING_STANDARDS.md`, `TESTING.md`, `SECURITY.md`, `CONTRIBUTING.md`
 - [x] `.cursor/rules/` (6 arquivos)
-- [x] `docs/architecture/adrs/ADR-0001` (React Native), `ADR-0002` (auth telefone — Proposed), `ADR_TEMPLATE.md`
+- [x] `docs/architecture/adrs/ADR-0001` (React Native), `ADR-0002` (auth telefone — Accepted), `ADR_TEMPLATE.md`
 
 ### Fase 1 — Specs complementares (humano)
 

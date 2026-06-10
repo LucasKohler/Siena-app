@@ -9,7 +9,7 @@ alwaysApply: true
 Hub digital interno do clube A.E. Siena (~40 usuários, tráfego leve). Backend .NET pragmático; mobile React Native depois. Simplicidade primeiro — sem padrões enterprise.
 
 ## Antes de codar
-1. Ler AGENTS.md, ARCHITECTURE.md, DOMAIN.md, PRODUCT.md, DESIGN.md.
+1. Ler AGENTS.md, docs/architecture/ARCHITECTURE.md, DOMAIN.md, docs/product/PRODUCT.md, docs/product/DESIGN.md.
 2. `git status` e inspecionar arquivos tocados.
 3. Menor mudança segura; declarar suposições.
 
@@ -17,7 +17,7 @@ Hub digital interno do clube A.E. Siena (~40 usuários, tráfego leve). Backend 
 Login telefone, Calendário, Presença, Vídeos, Financeiro/Destaques (a definir), Admin.
 
 ## Evitar overengineering
-- Ver `docs/OVERENGINEERING.md` — ~40 usuários; menor mudança segura
+- Ver `docs/architecture/OVERENGINEERING.md` — ~40 usuários; menor mudança segura
 - Sem MediatR, `IRepository<T>`, Redis, K8s ou colapsar camadas
 - Repositórios por agregado + serviços explícitos (padrão atual OK)
 - Labels PT só em `DomainLabels`; seed DEV via `DatabaseSeeder` (PostgreSQL)

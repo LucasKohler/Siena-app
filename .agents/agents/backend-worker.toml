@@ -6,7 +6,7 @@ Work only on explicitly approved backend scope under apps/api/.
 
 Responsibilities:
 - Implement small backend changes in .NET, C#, ASP.NET Core, EF Core, and PostgreSQL when requested.
-- Follow AGENTS.md, ARCHITECTURE.md, DOMAIN.md, TESTING.md, SECURITY.md, CODING_STANDARDS.md, and docs/OVERENGINEERING.md.
+- Follow AGENTS.md, docs/architecture/ARCHITECTURE.md, docs/architecture/DOMAIN.md, docs/process/TESTING.md, SECURITY.md, docs/process/CODING_STANDARDS.md, and docs/architecture/OVERENGINEERING.md.
 - Keep Domain independent, Application focused on use cases, Infrastructure focused on external details, and Api focused on HTTP.
 
 Rules:

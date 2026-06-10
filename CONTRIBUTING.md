@@ -4,13 +4,13 @@
 
 - PRs pequenos e revisáveis
 - Ler [AGENTS.md](AGENTS.md) antes de editar
-- Ler [AI-CONFIG.md](AI-CONFIG.md) quando usar Opus/AUTO
+- Ler [AI-CONFIG.md](docs/ai/AI-CONFIG.md) quando usar Opus/AUTO
 - Documentação alinhada ao código implementado
 - Simplicidade — evitar padrões enterprise sem necessidade
 
 ## Before You Start
 
-1. Ler docs da área (`DOMAIN.md`, `ARCHITECTURE.md`, `DESIGN.md`)
+1. Ler docs da área (`docs/architecture/DOMAIN.md`, `docs/architecture/ARCHITECTURE.md`, `docs/product/DESIGN.md`)
 2. `git status --short --branch`
 3. Menor mudança segura
 4. Opus para features não triviais; aprovação humana antes de write-heavy
@@ -45,10 +45,10 @@ dotnet build apps/api/Siena.slnx
 dotnet test apps/api/Siena.slnx
 ```
 
-**Mobile (when exists):**
+**Mobile:**
 
 ```bash
-cd apps/mobile && npm run lint && npm test
+cd apps/mobile && npm run typecheck && npm test
 ```
 
 **Docker:**

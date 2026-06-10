@@ -2,7 +2,7 @@
 
 Guia de **proporcionalidade** para um hub interno (~**40 usuários**, tráfego leve). A arquitetura atual (monólito em 4 camadas, PostgreSQL, Docker Compose) está **adequada** — o risco principal é **complexidade desnecessária** em código, abstrações e documentação.
 
-> Leia também: [ARCHITECTURE.md](../ARCHITECTURE.md), [AGENTS.md](../AGENTS.md).
+> Leia também: [ARCHITECTURE.md](ARCHITECTURE.md), [AGENTS.md](../../AGENTS.md).
 
 ---
 
@@ -89,6 +89,6 @@ Se duas ou mais respostas forem “não” ou “não sei”, **pare** e simplif
 
 ## Referências
 
-- [ARCHITECTURE.md](../ARCHITECTURE.md) — diagrama e camadas
-- [ADR-0003](architecture/adrs/ADR-0003-persistencia-postgresql.md) — PostgreSQL
-- [ADR-0002](architecture/adrs/ADR-0002-autenticacao-telefone.md) — auth por telefone (Accepted)
+- [ARCHITECTURE.md](ARCHITECTURE.md) — diagrama e camadas
+- [ADR-0003](adrs/ADR-0003-persistencia-postgresql.md) — PostgreSQL
+- [ADR-0002](adrs/ADR-0002-autenticacao-telefone.md) — auth por telefone (Accepted)

@@ -83,4 +83,4 @@ Exija aprovacao humana para deploy, rollback real, risco alto, breaking changes,
 
 - Use `.agents/prompts/prepare-release.md` para preparacao single-agent.
 - Use `pr-reviewer`, `qa-reviewer` e `security-reviewer` quando a release envolver diffs, lacunas de teste ou risco de seguranca.
-- Consulte `CONTRIBUTING.md`, `AI-CONFIG.md` e `.agents/skills/release-preparation/SKILL.md` para criterios de processo.
+- Consulte `CONTRIBUTING.md`, `docs/ai/AI-CONFIG.md` e `.agents/skills/release-preparation/SKILL.md` para criterios de processo.

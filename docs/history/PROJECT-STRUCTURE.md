@@ -1,8 +1,6 @@
 # Project Structure — Siena Voleibol
 
-Estrutura do repositório **Siena** e referência ao monorepo **Portfolio**.
-
----
+> **Documento histórico.** Estrutura canônica atual: [README.md](../../README.md) e [docs/ai/README.md](../ai/README.md). Mantido como log da migração Portfolio → Siena.
 
 ## Siena — documentação atual
 

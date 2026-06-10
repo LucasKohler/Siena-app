@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted (decisão do responsável) — implementação posterior
+Accepted — mobile implementado ([ADR-0004](ADR-0004-mobile-expo-router.md), Expo Router em `apps/mobile/`)
 
 ## Date
 
@@ -32,11 +32,11 @@ Negativas / custos:
 
 ## Validation Plan
 
-A definir quando o mobile entrar em escopo (após o backend). Mínimo esperado: lint + testes do app e uma tela consumindo `GET /api/health`.
+Implementado: `cd apps/mobile && npm run typecheck && npm test`; app consome API (`GET /api/health`, auth, eventos). Ver [ADR-0004](ADR-0004-mobile-expo-router.md).
 
 ## Rollback Plan
 
-Caso React Native seja revisto, substituir `apps/mobile/` mantendo os contratos da API inalterados e atualizar `ARCHITECTURE.md`, `AI-CONFIG.md` e a regra `.cursor/rules/mobile-app.mdc`.
+Caso React Native seja revisto, substituir `apps/mobile/` mantendo os contratos da API inalterados e atualizar `docs/architecture/ARCHITECTURE.md`, `docs/ai/AI-CONFIG.md` e a regra `.cursor/rules/mobile-app.mdc`.
 
 ## Human Approval Required
 

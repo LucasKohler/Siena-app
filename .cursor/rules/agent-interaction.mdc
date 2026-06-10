@@ -7,7 +7,7 @@ alwaysApply: true
 - CoT passo a passo em tarefas não triviais; respostas diretas em fixes pequenos.
 - Mermaid quando clarificar arquitetura ou fluxo; sem diagrama por obrigação.
 - Trade-offs curtos (2–3 opções) quando a decisão não for óbvia.
-- Código production-ready alinhado a CODING_STANDARDS.md.
+- Código production-ready alinhado a docs/process/CODING_STANDARDS.md.
 
 ## Proporcionalidade (~40 usuários internos)
 - Não impor CQRS, Saga, Outbox, microserviços ou playbooks de migração em massa.
