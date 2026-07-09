@@ -64,10 +64,11 @@ Guia de **proporcionalidade** para um hub interno (~**40 usuários**, tráfego l
 | Labels PT duplicados | **Feito:** `Siena.Domain/DomainLabels.cs` |
 | Arquivos `Infrastructure/Data/*.json` | **Removidos;** seed via `DatabaseSeeder` |
 | `IEventQuery` + `IEventCommand` | **Feito:** `IEventService` único |
-| `IVideoQueryService` | **Feito:** endpoint usa `IVideoRepository` + `VideoMappings` |
-| `ListPending` no approval service | **Feito:** `AdminEndpoints` → `IAttendanceRepository` |
+| `IVideoQueryService` | **Feito:** `VideosEndpoints` → `IVideoQueryService` + `VideoMappings` |
+| `ListPending` no approval service | **Feito:** `AdminEndpoints` → `IAttendanceApprovalService.ListPendingAsync` |
 | Consultas de telefone em memória | Mover para SQL/EF quando alterar auth |
 | Docs desatualizados | Corrigir no mesmo PR que muda comportamento |
+| Tooling `.agents/` / Cursor | **Manter** — import consciente do Portfolio; trim fora de ciclo de produto |
 
 ---
 

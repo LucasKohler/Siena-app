@@ -29,4 +29,17 @@ public sealed class OpenApiEndpointTests : IClassFixture<SienaWebApplicationFact
         Assert.Contains("/api/admin/users", content);
         Assert.Contains("/api/admin/trainings", content);
     }
+
+    [Fact]
+    public async Task GetOpenApiDocument_InProduction_ReturnsNotFound()
+    {
+        await using var factory = new SienaProductionWebApplicationFactory();
+        using var client = factory.CreateClient();
+
+        using var openApiResponse = await client.GetAsync("/openapi/v1.json");
+        Assert.Equal(HttpStatusCode.NotFound, openApiResponse.StatusCode);
+
+        using var scalarResponse = await client.GetAsync("/scalar/v1");
+        Assert.Equal(HttpStatusCode.NotFound, scalarResponse.StatusCode);
+    }
 }

@@ -2,7 +2,6 @@ using Siena.Application.Auth;
 using Siena.Application.Events;
 using Siena.Domain;
 using Siena.Domain.Attendance;
-using Siena.Domain.Events;
 
 namespace Siena.Application.Trainings;
 
@@ -26,14 +25,11 @@ public sealed class TrainingQueryService : ITrainingQueryService
         string userId,
         CancellationToken cancellationToken)
     {
-        var events = await _eventRepository.ListAsync(cancellationToken);
         var now = DateTimeOffset.UtcNow;
 
-        var nextTraining = events
-            .Where(eventItem => eventItem.Type == EventType.TreinoFisico)
-            .Where(eventItem => eventItem.StartsAt >= now)
-            .OrderBy(eventItem => eventItem.StartsAt)
-            .FirstOrDefault();
+        var nextTraining = await _eventRepository.GetNextUpcomingTrainingAsync(
+            now,
+            cancellationToken);
 
         if (nextTraining is null)
         {
@@ -72,13 +68,19 @@ public sealed class TrainingQueryService : ITrainingQueryService
                 && attendance.ApprovalStatus == AttendanceApprovalStatus.Approved)
             .ToArray();
 
+        if (attending.Length == 0)
+        {
+            return Array.Empty<ConfirmedAttendeeDto>();
+        }
+
+        var userIds = attending.Select(attendance => attendance.UserId);
+        var users = await _userRepository.GetByIdsAsync(userIds, cancellationToken);
+
         var confirmed = new List<ConfirmedAttendeeDto>();
 
         foreach (var attendance in attending)
         {
-            var user = await _userRepository.GetByIdAsync(attendance.UserId, cancellationToken);
-
-            if (user is null)
+            if (!users.TryGetValue(attendance.UserId, out var user))
             {
                 continue;
             }

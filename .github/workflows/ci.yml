@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  api:
+    name: Backend (.NET)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+
+      - name: Restore
+        run: dotnet restore apps/api/Siena.slnx
+
+      - name: Build
+        run: dotnet build apps/api/Siena.slnx --no-restore
+
+      - name: Test
+        run: dotnet test apps/api/Siena.slnx --no-build --verbosity minimal
+
+  mobile:
+    name: Mobile (Expo)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: apps/mobile/package-lock.json
+
+      - name: Install
+        working-directory: apps/mobile
+        run: npm ci
+
+      - name: Typecheck
+        working-directory: apps/mobile
+        run: npm run typecheck
+
+      - name: Test
+        working-directory: apps/mobile
+        run: npm test
+
+  compose:
+    name: Docker Compose config
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate compose files
+        run: docker compose config

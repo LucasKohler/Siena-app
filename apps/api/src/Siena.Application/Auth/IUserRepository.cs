@@ -8,6 +8,10 @@ public interface IUserRepository
 
     Task<UserAccount?> GetByIdAsync(string id, CancellationToken cancellationToken);
 
+    Task<IReadOnlyDictionary<string, UserAccount>> GetByIdsAsync(
+        IEnumerable<string> ids,
+        CancellationToken cancellationToken);
+
     Task<IReadOnlyCollection<UserAccount>> ListAsync(
         bool includeInactive,
         CancellationToken cancellationToken);

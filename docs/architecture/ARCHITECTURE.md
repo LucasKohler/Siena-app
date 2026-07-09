@@ -20,7 +20,7 @@ Arquitetura do hub digital interno da **A.E. Siena**. Referência de engenharia:
 ### Features (from Stitch)
 
 - Login por telefone ([ADR-0002](adrs/ADR-0002-autenticacao-telefone.md) — Accepted)
-- Tabs: Financeiro (*a definir*), Calendário, Destaques (*a definir*), Vídeos
+- Tabs (v1 implementado): Financeiro (placeholder), Calendário, Vídeos — **Destaques adiado** ([ADR-0004](adrs/ADR-0004-mobile-expo-router.md)); export Stitch ainda mostra 4 abas
 - Presença no treino (Eu vou / Não vou)
 - Admin (mobile + web)
 
@@ -125,7 +125,7 @@ Domain -> (none outward)
 - Feature folders: `auth`, `calendar`, `attendance`, `videos`, etc.
 - Theme from [DESIGN.md](../product/DESIGN.md) (`#E30613`, Inter)
 - API client typed to backend DTOs
-- Bottom tabs matching Stitch: Financeiro, Calendário, Destaques, Vídeos
+- Bottom tabs v1: Financeiro (placeholder), Calendário, Vídeos — Destaques adiado ([ADR-0004](adrs/ADR-0004-mobile-expo-router.md))
 
 ---
 

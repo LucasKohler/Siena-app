@@ -55,7 +55,7 @@ Rules:
 - Validar DTOs de entrada
 - Respostas de erro claras, sem stack trace
 - CORS restrito a origens conhecidas (mobile dev, admin web)
-- Rate limiting antes de exposição pública (se algum dia houver)
+- Rate limiting em `POST /api/auth/login`: fixed window 20 req/min/IP (ASP.NET Core built-in)
 
 ### Admin (Fase 2f)
 

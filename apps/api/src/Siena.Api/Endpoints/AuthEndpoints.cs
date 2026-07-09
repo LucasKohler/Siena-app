@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using Siena.Api.Configuration;
 using Siena.Application.Auth;
 using Siena.Domain;
 
@@ -24,8 +25,10 @@ public static class AuthEndpoints
         })
         .WithName("Login")
         .WithSummary("Authenticates a phone number on the internal allowlist and returns a JWT.")
+        .RequireRateLimiting(RateLimitConfiguration.LoginPolicy)
         .Produces<AuthResultDto>(StatusCodes.Status200OK)
-        .Produces(StatusCodes.Status401Unauthorized);
+        .Produces(StatusCodes.Status401Unauthorized)
+        .Produces(StatusCodes.Status429TooManyRequests);
 
         group.MapGet("/me", (ClaimsPrincipal user) =>
         {

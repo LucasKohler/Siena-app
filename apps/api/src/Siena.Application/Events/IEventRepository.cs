@@ -15,4 +15,8 @@ public interface IEventRepository
     Task DeleteAsync(string id, CancellationToken cancellationToken);
 
     Task<bool> HasAttendancesAsync(string eventId, CancellationToken cancellationToken);
+
+    Task<Event?> GetNextUpcomingTrainingAsync(
+        DateTimeOffset asOf,
+        CancellationToken cancellationToken);
 }

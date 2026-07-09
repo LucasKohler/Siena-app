@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { ApiError } from "../../src/api/client";
 import * as endpoints from "../../src/api/endpoints";
+import type { EventSummaryDto } from "../../src/api/types";
 import { useApi } from "../../src/api/useApi";
 import { useAuth } from "../../src/auth/AuthContext";
 import { Button } from "../../src/components/Button";
@@ -20,6 +21,16 @@ import {
 } from "../../src/constants/domain";
 import { colors, spacing, typography } from "../../src/theme";
 
+function formatApiError(e: unknown, fallback: string) {
+  if (e instanceof ApiError) {
+    return e.message;
+  }
+  if (e instanceof Error) {
+    return e.message;
+  }
+  return fallback;
+}
+
 export default function AdminEventosScreen() {
   const { token } = useAuth();
   const { data: events, loading, error, refetch } = useApi(
@@ -30,28 +41,54 @@ export default function AdminEventosScreen() {
     [token]
   );
 
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [id, setId] = useState("");
   const [title, setTitle] = useState("");
   const [type, setType] = useState<string>(EVENT_TYPES[1]);
   const [category, setCategory] = useState<string>(EVENT_CATEGORIES[0]);
-  const [startsAt, setStartsAt] = useState("2026-06-20T19:00:00-03:00");
+  const [startsAt, setStartsAt] = useState("2026-09-20T19:00:00-03:00");
   const [location, setLocation] = useState("Ginásio Principal");
   const [opponent, setOpponent] = useState("");
   const [description, setDescription] = useState("");
   const [saving, setSaving] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
 
+  const resetForm = () => {
+    setEditingId(null);
+    setId("");
+    setTitle("");
+    setType(EVENT_TYPES[1]);
+    setCategory(EVENT_CATEGORIES[0]);
+    setStartsAt("2026-09-20T19:00:00-03:00");
+    setLocation("Ginásio Principal");
+    setOpponent("");
+    setDescription("");
+    setFormError(null);
+  };
+
+  const startEdit = (ev: EventSummaryDto) => {
+    setEditingId(ev.id);
+    setId(ev.id);
+    setTitle(ev.title);
+    setType(ev.type);
+    setCategory(ev.category);
+    setStartsAt(ev.startsAt);
+    setLocation(ev.location);
+    setOpponent(ev.opponent ?? "");
+    setDescription("");
+    setFormError(null);
+  };
+
   const submit = async () => {
     if (!token) return;
-    if (!id.trim() || !title.trim()) {
+    if (!title.trim() || !id.trim()) {
       setFormError("Id e título são obrigatórios.");
       return;
     }
     setSaving(true);
     setFormError(null);
     try {
-      await endpoints.createAdminEvent(token, {
-        id: id.trim(),
+      const payload = {
         title: title.trim(),
         type,
         category,
@@ -59,28 +96,67 @@ export default function AdminEventosScreen() {
         location: location.trim(),
         opponent: opponent.trim() || null,
         description: description.trim() || null,
-      });
-      Alert.alert("Sucesso", "Evento criado.");
-      setId("");
-      setTitle("");
+      };
+
+      if (editingId) {
+        await endpoints.updateAdminEvent(token, editingId, payload);
+        Alert.alert("Sucesso", "Evento atualizado.");
+      } else {
+        await endpoints.createAdminEvent(token, {
+          id: id.trim(),
+          ...payload,
+        });
+        Alert.alert("Sucesso", "Evento criado.");
+      }
+      resetForm();
       refetch();
     } catch (e) {
-      setFormError(
-        e instanceof ApiError
-          ? e.message
-          : e instanceof Error
-            ? e.message
-            : "Erro ao criar evento"
-      );
+      setFormError(formatApiError(e, "Erro ao salvar evento"));
     } finally {
       setSaving(false);
     }
   };
 
+  const confirmDelete = (eventId: string, eventTitle: string) => {
+    Alert.alert(
+      "Excluir evento",
+      `Remover "${eventTitle}"? Só é possível se não houver presenças registradas.`,
+      [
+        { text: "Cancelar", style: "cancel" },
+        {
+          text: "Excluir",
+          style: "destructive",
+          onPress: () => void deleteEvent(eventId),
+        },
+      ]
+    );
+  };
+
+  const deleteEvent = async (eventId: string) => {
+    if (!token) return;
+    try {
+      await endpoints.deleteAdminEvent(token, eventId);
+      if (editingId === eventId) {
+        resetForm();
+      }
+      refetch();
+    } catch (e) {
+      Alert.alert("Erro", formatApiError(e, "Erro ao excluir evento"));
+    }
+  };
+
   return (
     <ScrollView style={styles.root} contentContainerStyle={styles.content}>
-      <Text style={styles.section}>Novo evento</Text>
-      <FormField label="Id (slug único)" value={id} onChangeText={setId} placeholder="treino-2026-06-20" />
+      <Text style={styles.section}>
+        {editingId ? "Editar evento" : "Novo evento"}
+      </Text>
+      <FormField
+        label="Id (slug único)"
+        value={id}
+        onChangeText={setId}
+        placeholder="treino-2026-09-20"
+        editable={!editingId}
+      />
       <FormField label="Título" value={title} onChangeText={setTitle} />
       <Text style={styles.label}>Tipo</Text>
       <View style={styles.chips}>
@@ -98,7 +174,7 @@ export default function AdminEventosScreen() {
         label="Início (ISO 8601)"
         value={startsAt}
         onChangeText={setStartsAt}
-        placeholder="2026-06-20T19:00:00-03:00"
+        placeholder="2026-09-20T19:00:00-03:00"
       />
       <FormField label="Local" value={location} onChangeText={setLocation} />
       <FormField label="Adversário (opcional)" value={opponent} onChangeText={setOpponent} />
@@ -109,7 +185,14 @@ export default function AdminEventosScreen() {
         multiline
       />
       {formError && <Text style={styles.error}>{formError}</Text>}
-      <Button label="Criar evento" onPress={submit} loading={saving} />
+      <Button
+        label={editingId ? "Salvar alterações" : "Criar evento"}
+        onPress={submit}
+        loading={saving}
+      />
+      {editingId && (
+        <Button label="Cancelar edição" variant="ghost" onPress={resetForm} />
+      )}
 
       <Text style={[styles.section, styles.listTitle]}>Eventos cadastrados</Text>
       <ScreenState loading={loading} error={error}>
@@ -119,6 +202,18 @@ export default function AdminEventosScreen() {
             <Text style={styles.rowMeta}>
               {ev.type} • {ev.category} • {ev.id}
             </Text>
+            <View style={styles.rowActions}>
+              <Button
+                label="Editar"
+                variant="ghost"
+                onPress={() => startEdit(ev)}
+              />
+              <Button
+                label="Excluir"
+                variant="ghost"
+                onPress={() => confirmDelete(ev.id, ev.title)}
+              />
+            </View>
           </View>
         ))}
       </ScreenState>
@@ -150,6 +245,7 @@ const styles = StyleSheet.create({
     padding: spacing.stackMd,
     borderBottomWidth: 1,
     borderBottomColor: colors.surfaceVariant,
+    gap: spacing.stackSm,
   },
   rowTitle: {
     ...typography.bodyMd,
@@ -160,5 +256,9 @@ const styles = StyleSheet.create({
     ...typography.labelSm,
     color: colors.onSurfaceVariant,
     fontFamily: "Inter_400Regular",
+  },
+  rowActions: {
+    flexDirection: "row",
+    gap: 8,
   },
 });

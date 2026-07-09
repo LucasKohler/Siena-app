@@ -14,8 +14,8 @@ Plano de migração de **documentação e disciplina de engenharia** do Portfoli
 | Contexto real do Stitch (não lista genérica de features) | Concluído |
 | Descartar confusão Grok (enterprise / Mongo migration) | Concluído |
 | Implementação backend (fundação) | Concluída (Fase 2a) |
-| Implementação backend (domínio) | Parcial (2b–2d + Postgres; mobile pendente) |
-| Implementação mobile | Em andamento (Fase 3 scaffold) |
+| Implementação backend (domínio) | Concluída (2b–2f + Postgres) |
+| Implementação mobile | Em andamento (Fase 3 — fluxos core + admin) |
 
 ---
 
@@ -108,7 +108,7 @@ Docker: arquivos criados; **validação não executada** (Docker ausente no ambi
 - [x] Fluxo presença em dois passos: atleta → Pendente; staff approve/reject; `confirmed` só Aprovado
 - [x] `UserAccount.IsActive`; migration `AddAttendanceApprovalAndUserIsActive`
 - [x] Testes: `AdminEventsEndpointTests`, `AdminUsersEndpointTests`, `AdminAttendanceApprovalTests`
-- [x] `dotnet test` — 23 testes passando
+- [x] `dotnet test` — suite de integração API passando
 
 ### Fase 3 — Mobile React Native (EM ANDAMENTO)
 
@@ -117,14 +117,14 @@ Docker: arquivos criados; **validação não executada** (Docker ausente no ambi
 - [x] Tabs: Financeiro (placeholder), Calendário, Vídeos; login; presença; admin mobile (Staff)
 - [x] Cliente API (`src/api`, JWT secure-store)
 - [ ] Destaques (adiado)
-- [x] Admin: criar eventos, aprovar presenças, contagem pendentes, listagem usuários
-- [ ] Admin: criar/editar usuários no app (somente listagem por ora)
+- [x] Admin: criar/editar/excluir eventos, aprovar presenças, contagem pendentes
+- [x] Admin: criar/editar/ativar-desativar usuários
 
 ### Fase 4 — Admin web + polish
 
 - [ ] `apps/admin-web` simples (se necessário)
 - [ ] OTP/SMS e refresh token (follow-up ADR)
-- [ ] CI básico
+- [x] CI básico (`.github/workflows/ci.yml`)
 
 ---
 
@@ -151,11 +151,18 @@ flowchart TD
 
 1. Você: specs de Financeiro/Destaques; textos legais (termos/privacidade)
 2. Smoke manual mobile + Expo Go contra API DEV
-3. Admin mobile: telas CRUD eventos/presenças (próxima fatia)
+3. Gate humano: limites de rate limit / AllowedHosts em produção
 
 ---
 
 ## 6. Referências
+
+- [AGENTS.md](../../AGENTS.md)
+- [ARCHITECTURE.md](../architecture/ARCHITECTURE.md)
+- [DOMAIN.md](../architecture/DOMAIN.md)
+- [PRODUCT.md](../product/PRODUCT.md)
+- [AI-CONFIG.md](../ai/AI-CONFIG.md)
+- [OVERENGINEERING.md](../architecture/OVERENGINEERING.md)
 
 - Fonte engenharia: `C:\Users\lucas\Documents\Projects\Portfolio`
 - Destino: `C:\Users\lucas\Documents\Projects\Siena`

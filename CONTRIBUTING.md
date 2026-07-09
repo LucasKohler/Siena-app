@@ -38,6 +38,8 @@ test: add health endpoint test
 
 ## Validation
 
+GitHub Actions (`.github/workflows/ci.yml`) espelha estes comandos em push/PR para `main`.
+
 **Backend:**
 
 ```bash

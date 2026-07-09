@@ -7,4 +7,5 @@ services:
       target: runtime
     environment:
       ASPNETCORE_ENVIRONMENT: Production
+      AllowedHosts: ${ALLOWED_HOSTS:-api.siena.local;localhost}
     volumes: !reset []

@@ -38,6 +38,27 @@ public sealed class EfUserRepository : IUserRepository
         return user is null ? null : EntityMappings.ToDomain(user);
     }
 
+    public async Task<IReadOnlyDictionary<string, UserAccount>> GetByIdsAsync(
+        IEnumerable<string> ids,
+        CancellationToken cancellationToken)
+    {
+        var idList = ids.Distinct(StringComparer.Ordinal).ToArray();
+
+        if (idList.Length == 0)
+        {
+            return new Dictionary<string, UserAccount>(StringComparer.Ordinal);
+        }
+
+        var users = await _dbContext.Users
+            .AsNoTracking()
+            .Where(entity => idList.Contains(entity.Id))
+            .ToListAsync(cancellationToken);
+
+        return users
+            .Select(EntityMappings.ToDomain)
+            .ToDictionary(user => user.Id, StringComparer.Ordinal);
+    }
+
     public async Task<IReadOnlyCollection<UserAccount>> ListAsync(
         bool includeInactive,
         CancellationToken cancellationToken)

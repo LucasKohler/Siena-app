@@ -86,6 +86,25 @@ public sealed class EfEventRepository : IEventRepository
             cancellationToken);
     }
 
+    public async Task<Event?> GetNextUpcomingTrainingAsync(
+        DateTimeOffset asOf,
+        CancellationToken cancellationToken)
+    {
+        var trainingType = DomainLabels.ToLabel(EventType.TreinoFisico);
+
+        var candidates = await _dbContext.Events
+            .AsNoTracking()
+            .Where(entity => entity.Type == trainingType)
+            .ToListAsync(cancellationToken);
+
+        var eventItem = candidates
+            .Where(entity => entity.StartsAt >= asOf)
+            .OrderBy(entity => entity.StartsAt)
+            .FirstOrDefault();
+
+        return eventItem is null ? null : EntityMappings.ToDomain(eventItem);
+    }
+
     private static EventEntity ToEntity(Event eventItem)
     {
         return new EventEntity

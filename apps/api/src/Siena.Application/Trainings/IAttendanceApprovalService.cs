@@ -2,6 +2,10 @@ namespace Siena.Application.Trainings;
 
 public interface IAttendanceApprovalService
 {
+    Task<IReadOnlyCollection<PendingAttendanceDto>> ListPendingAsync(
+        string eventId,
+        CancellationToken cancellationToken);
+
     Task<SetApprovalResult> SetApprovalAsync(
         string eventId,
         string userId,

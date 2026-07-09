@@ -2,10 +2,13 @@ import { apiRequest } from "./client";
 import type {
   AuthResultDto,
   CreateEventRequest,
+  CreateUserRequest,
   CurrentUserDto,
   EventSummaryDto,
   NextTrainingDto,
   PendingAttendanceDto,
+  UpdateEventRequest,
+  UpdateUserRequest,
   UserSummaryDto,
   VideoSummaryDto,
 } from "./types";
@@ -60,6 +63,60 @@ export function createAdminEvent(token: string, body: CreateEventRequest) {
     body,
     token,
   });
+}
+
+export function updateAdminEvent(
+  token: string,
+  id: string,
+  body: UpdateEventRequest
+) {
+  return apiRequest<void>(`/api/admin/events/${encodeURIComponent(id)}`, {
+    method: "PUT",
+    body,
+    token,
+  });
+}
+
+export function deleteAdminEvent(token: string, id: string) {
+  return apiRequest<void>(`/api/admin/events/${encodeURIComponent(id)}`, {
+    method: "DELETE",
+    token,
+  });
+}
+
+export function createAdminUser(token: string, body: CreateUserRequest) {
+  return apiRequest<void>("/api/admin/users", {
+    method: "POST",
+    body,
+    token,
+  });
+}
+
+export function updateAdminUser(
+  token: string,
+  id: string,
+  body: UpdateUserRequest
+) {
+  return apiRequest<void>(`/api/admin/users/${encodeURIComponent(id)}`, {
+    method: "PUT",
+    body,
+    token,
+  });
+}
+
+export function setAdminUserActive(
+  token: string,
+  id: string,
+  isActive: boolean
+) {
+  return apiRequest<void>(
+    `/api/admin/users/${encodeURIComponent(id)}/active`,
+    {
+      method: "PATCH",
+      body: { isActive },
+      token,
+    }
+  );
 }
 
 export function listPendingAttendances(

@@ -31,7 +31,7 @@ Base URL padrão: `http://localhost:5000`
 |----------|-----|
 | `baseUrl` | Host da API |
 | `token` | JWT (preenchido após login) |
-| `eventId` | Treino/evento (seed: `treino-fisico-2026-06-15`) |
+| `eventId` | Treino/evento (seed: `treino-fisico-2026-09-15`) |
 | `userId` | Atleta para aprovação (seed: `user-athlete-dev-1`) |
 
 OpenAPI alternativo: `http://localhost:5000/openapi/v1.json` (Scalar: `/scalar`).

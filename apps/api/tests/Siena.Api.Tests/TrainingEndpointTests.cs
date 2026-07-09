@@ -27,7 +27,7 @@ public sealed class TrainingEndpointTests : IClassFixture<SienaWebApplicationFac
         using var document = await JsonDocument.ParseAsync(stream);
 
         var training = document.RootElement;
-        Assert.Equal("treino-fisico-2026-06-15", training.GetProperty("eventId").GetString());
+        Assert.Equal("treino-fisico-2026-09-15", training.GetProperty("eventId").GetString());
         Assert.Equal("Treino Físico", training.GetProperty("title").GetString());
         Assert.Equal("Feminino", training.GetProperty("category").GetString());
         Assert.Equal("Centro de Treinamento", training.GetProperty("location").GetString());
@@ -41,7 +41,7 @@ public sealed class TrainingEndpointTests : IClassFixture<SienaWebApplicationFac
 
         using var postRequest = TestAuth.WithBearer(
             HttpMethod.Post,
-            "/api/trainings/treino-fisico-2026-06-15/attendance",
+            "/api/trainings/treino-fisico-2026-09-15/attendance",
             token);
         postRequest.Content = JsonContent.Create(new { status = "Eu vou" });
 
@@ -66,7 +66,7 @@ public sealed class TrainingEndpointTests : IClassFixture<SienaWebApplicationFac
     public async Task SetAttendance_WithoutToken_ReturnsUnauthorized()
     {
         using var response = await _client.PostAsJsonAsync(
-            "/api/trainings/treino-fisico-2026-06-15/attendance",
+            "/api/trainings/treino-fisico-2026-09-15/attendance",
             new { status = "Eu vou" });
 
         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
@@ -79,7 +79,7 @@ public sealed class TrainingEndpointTests : IClassFixture<SienaWebApplicationFac
 
         using var request = TestAuth.WithBearer(
             HttpMethod.Post,
-            "/api/trainings/treino-fisico-2026-06-15/attendance",
+            "/api/trainings/treino-fisico-2026-09-15/attendance",
             token);
         request.Content = JsonContent.Create(new { status = "Eu vou" });
 

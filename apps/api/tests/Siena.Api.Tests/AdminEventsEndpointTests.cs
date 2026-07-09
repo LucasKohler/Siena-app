@@ -65,7 +65,7 @@ public sealed class AdminEventsEndpointTests : IClassFixture<SienaWebApplication
 
         using var attendanceRequest = TestAuth.WithBearer(
             HttpMethod.Post,
-            "/api/trainings/treino-fisico-2026-06-15/attendance",
+            "/api/trainings/treino-fisico-2026-09-15/attendance",
             athleteToken);
         attendanceRequest.Content = JsonContent.Create(new { status = "Eu vou" });
         using var attendanceResponse = await _client.SendAsync(attendanceRequest);
@@ -75,7 +75,7 @@ public sealed class AdminEventsEndpointTests : IClassFixture<SienaWebApplication
 
         using var deleteRequest = TestAuth.WithBearer(
             HttpMethod.Delete,
-            "/api/admin/events/treino-fisico-2026-06-15",
+            "/api/admin/events/treino-fisico-2026-09-15",
             adminToken);
 
         using var deleteResponse = await _client.SendAsync(deleteRequest);

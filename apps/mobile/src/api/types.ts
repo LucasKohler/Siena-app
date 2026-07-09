@@ -74,6 +74,30 @@ export type CreateEventRequest = {
   description: string | null;
 };
 
+export type UpdateEventRequest = {
+  title: string;
+  type: string;
+  category: string;
+  startsAt: string;
+  location: string;
+  opponent: string | null;
+  description: string | null;
+};
+
+export type CreateUserRequest = {
+  id: string;
+  phoneNumber: string;
+  displayName: string;
+  role: string;
+  position: string | null;
+};
+
+export type UpdateUserRequest = {
+  displayName: string;
+  role: string;
+  position: string | null;
+};
+
 export type ApiProblem = {
   title?: string;
   detail?: string;

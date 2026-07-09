@@ -10,6 +10,7 @@ builder.Services
     .AddInfrastructure(builder.Configuration)
     .AddSienaAuth(builder.Configuration)
     .AddSienaCors(builder.Configuration)
+    .AddSienaRateLimiting()
     .AddSienaOpenApi();
 
 var app = builder.Build();
@@ -20,6 +21,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseSienaCors();
+app.UseSienaRateLimiting();
 app.UseSienaAuth();
 
 app.MapGet("/", () => Results.Ok(new
@@ -30,7 +32,11 @@ app.MapGet("/", () => Results.Ok(new
 .WithName("GetApiRoot")
 .WithTags("System");
 
-app.MapSienaOpenApi();
+if (app.Environment.IsDevelopment() || app.Environment.IsEnvironment("Testing"))
+{
+    app.MapSienaOpenApi();
+}
+
 app.MapHealthEndpoints();
 app.MapAuthEndpoints();
 app.MapTrainingEndpoints();

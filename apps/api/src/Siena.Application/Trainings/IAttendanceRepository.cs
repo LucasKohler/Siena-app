@@ -15,7 +15,7 @@ public interface IAttendanceRepository
 
     Task UpsertAsync(Attendance attendance, CancellationToken cancellationToken);
 
-    Task<IReadOnlyCollection<PendingAttendanceDto>> ListPendingByEventAsync(
+    Task<IReadOnlyCollection<PendingAttendanceInfo>> ListPendingWithUsersByEventAsync(
         string eventId,
         CancellationToken cancellationToken);
 

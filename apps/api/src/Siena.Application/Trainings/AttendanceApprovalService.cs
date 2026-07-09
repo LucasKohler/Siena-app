@@ -1,4 +1,5 @@
 using Siena.Application.Events;
+using Siena.Domain;
 using Siena.Domain.Attendance;
 using Siena.Domain.Events;
 
@@ -15,6 +16,25 @@ public sealed class AttendanceApprovalService : IAttendanceApprovalService
     {
         _eventRepository = eventRepository;
         _attendanceRepository = attendanceRepository;
+    }
+
+    public async Task<IReadOnlyCollection<PendingAttendanceDto>> ListPendingAsync(
+        string eventId,
+        CancellationToken cancellationToken)
+    {
+        var pending = await _attendanceRepository.ListPendingWithUsersByEventAsync(
+            eventId,
+            cancellationToken);
+
+        return pending
+            .Select(info => new PendingAttendanceDto(
+                info.UserId,
+                info.DisplayName,
+                info.Position,
+                DomainLabels.ToLabel(info.Status),
+                DomainLabels.ToLabel(info.ApprovalStatus)))
+            .OrderBy(info => info.DisplayName, StringComparer.OrdinalIgnoreCase)
+            .ToArray();
     }
 
     public async Task<SetApprovalResult> SetApprovalAsync(

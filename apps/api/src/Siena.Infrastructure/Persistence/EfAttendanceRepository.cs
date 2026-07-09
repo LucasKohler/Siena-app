@@ -68,7 +68,7 @@ public sealed class EfAttendanceRepository : IAttendanceRepository
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<IReadOnlyCollection<PendingAttendanceDto>> ListPendingByEventAsync(
+    public async Task<IReadOnlyCollection<PendingAttendanceInfo>> ListPendingWithUsersByEventAsync(
         string eventId,
         CancellationToken cancellationToken)
     {
@@ -90,12 +90,12 @@ public sealed class EfAttendanceRepository : IAttendanceRepository
             }).ToListAsync(cancellationToken);
 
         return rows
-            .Select(row => new PendingAttendanceDto(
+            .Select(row => new PendingAttendanceInfo(
                 row.UserId,
                 row.DisplayName,
                 string.IsNullOrWhiteSpace(row.Position) ? null : row.Position,
-                row.Status,
-                row.ApprovalStatus))
+                DomainLabels.ParseAttendanceStatus(row.Status),
+                DomainLabels.ParseApprovalStatus(row.ApprovalStatus)))
             .OrderBy(row => row.DisplayName, StringComparer.OrdinalIgnoreCase)
             .ToArray();
     }

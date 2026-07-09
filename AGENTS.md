@@ -20,7 +20,7 @@ Fonte única de verdade para agentes de IA e para a equipe. Leia este arquivo an
 ### Funcionalidades (observadas no Stitch)
 
 - Login por **número de telefone** + termos/privacidade
-- Abas: **Financeiro**, **Calendário**, **Destaques**, **Vídeos**
+- Abas v1 (app): **Financeiro** (placeholder), **Calendário**, **Vídeos** — **Destaques adiado** ([ADR-0004](docs/architecture/adrs/ADR-0004-mobile-expo-router.md)); export Stitch ainda lista 4 abas
 - **Calendário:** eventos (liga, treino, amistoso) com categoria (Masculino, Feminino)
 - **Presença no treino:** Eu vou / Não vou + lista de confirmados (nome, posição)
 - **Vídeos:** canal oficial

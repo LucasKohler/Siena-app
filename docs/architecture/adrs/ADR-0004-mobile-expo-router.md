@@ -34,7 +34,7 @@ Positivas:
 Negativas:
 
 - Dependência do ecossistema Expo para builds nativos
-- Sub-telas admin CRUD completas ficam para iteração seguinte (stubs + listagem usuários)
+- ~~Sub-telas admin CRUD completas ficam para iteração seguinte~~ Admin mobile CRUD eventos/usuários implementado (2026-07)
 
 ## Validation Plan
 

@@ -20,12 +20,41 @@ public sealed class AdminAttendanceApprovalTests : IClassFixture<SienaWebApplica
 
         using var postRequest = TestAuth.WithBearer(
             HttpMethod.Post,
-            "/api/trainings/treino-fisico-2026-06-15/attendance",
+            "/api/trainings/treino-fisico-2026-09-15/attendance",
             athleteToken);
         postRequest.Content = JsonContent.Create(new { status = "Eu vou" });
 
         using var postResponse = await _client.SendAsync(postRequest);
         Assert.Equal(HttpStatusCode.NoContent, postResponse.StatusCode);
+
+        var coachToken = await TestAuth.LoginAsync(_client, "+5511999990002");
+
+        using var listPendingRequest = TestAuth.WithBearer(
+            HttpMethod.Get,
+            "/api/admin/trainings/treino-fisico-2026-09-15/attendances/pending",
+            coachToken);
+
+        using var listPendingResponse = await _client.SendAsync(listPendingRequest);
+        Assert.Equal(HttpStatusCode.OK, listPendingResponse.StatusCode);
+
+        await using var pendingStream = await listPendingResponse.Content.ReadAsStreamAsync();
+        using var pendingDocument = await JsonDocument.ParseAsync(pendingStream);
+
+        var pending = pendingDocument.RootElement.EnumerateArray().ToArray();
+        Assert.Contains(
+            pending,
+            item => item.GetProperty("userId").GetString() == "user-athlete-dev-1"
+                    && item.GetProperty("response").GetString() == "Eu vou"
+                    && item.GetProperty("approvalStatus").GetString() == "Pendente");
+
+        using var approveRequest = TestAuth.WithBearer(
+            HttpMethod.Post,
+            "/api/admin/trainings/treino-fisico-2026-09-15/attendances/user-athlete-dev-1/approval",
+            coachToken);
+        approveRequest.Content = JsonContent.Create(new { action = "approve" });
+
+        using var approveResponse = await _client.SendAsync(approveRequest);
+        Assert.Equal(HttpStatusCode.NoContent, approveResponse.StatusCode);
 
         using var getBeforeApproval = TestAuth.WithBearer(
             HttpMethod.Get,
@@ -38,34 +67,7 @@ public sealed class AdminAttendanceApprovalTests : IClassFixture<SienaWebApplica
         await using var beforeStream = await beforeResponse.Content.ReadAsStreamAsync();
         using var beforeDocument = await JsonDocument.ParseAsync(beforeStream);
 
-        var beforeTraining = beforeDocument.RootElement;
-        Assert.Equal("Eu vou", beforeTraining.GetProperty("myStatus").GetString());
-        Assert.Equal("Pendente", beforeTraining.GetProperty("myApprovalStatus").GetString());
-        Assert.Empty(beforeTraining.GetProperty("confirmed").EnumerateArray());
-
-        var coachToken = await TestAuth.LoginAsync(_client, "+5511999990002");
-
-        using var approveRequest = TestAuth.WithBearer(
-            HttpMethod.Post,
-            "/api/admin/trainings/treino-fisico-2026-06-15/attendances/user-athlete-dev-1/approval",
-            coachToken);
-        approveRequest.Content = JsonContent.Create(new { action = "approve" });
-
-        using var approveResponse = await _client.SendAsync(approveRequest);
-        Assert.Equal(HttpStatusCode.NoContent, approveResponse.StatusCode);
-
-        using var getAfterApproval = TestAuth.WithBearer(
-            HttpMethod.Get,
-            "/api/trainings/next",
-            athleteToken);
-
-        using var afterResponse = await _client.SendAsync(getAfterApproval);
-        Assert.Equal(HttpStatusCode.OK, afterResponse.StatusCode);
-
-        await using var afterStream = await afterResponse.Content.ReadAsStreamAsync();
-        using var afterDocument = await JsonDocument.ParseAsync(afterStream);
-
-        var afterTraining = afterDocument.RootElement;
+        var afterTraining = beforeDocument.RootElement;
         Assert.Equal("Aprovado", afterTraining.GetProperty("myApprovalStatus").GetString());
 
         var confirmed = afterTraining.GetProperty("confirmed");
@@ -81,7 +83,7 @@ public sealed class AdminAttendanceApprovalTests : IClassFixture<SienaWebApplica
 
         using var postRequest = TestAuth.WithBearer(
             HttpMethod.Post,
-            "/api/trainings/treino-fisico-2026-06-15/attendance",
+            "/api/trainings/treino-fisico-2026-09-15/attendance",
             athleteToken);
         postRequest.Content = JsonContent.Create(new { status = "Eu vou" });
 
@@ -92,7 +94,7 @@ public sealed class AdminAttendanceApprovalTests : IClassFixture<SienaWebApplica
 
         using var rejectRequest = TestAuth.WithBearer(
             HttpMethod.Post,
-            "/api/admin/trainings/treino-fisico-2026-06-15/attendances/user-athlete-dev-2/approval",
+            "/api/admin/trainings/treino-fisico-2026-09-15/attendances/user-athlete-dev-2/approval",
             adminToken);
         rejectRequest.Content = JsonContent.Create(new { action = "reject" });
 
@@ -111,5 +113,19 @@ public sealed class AdminAttendanceApprovalTests : IClassFixture<SienaWebApplica
         Assert.DoesNotContain(
             confirmed.EnumerateArray(),
             attendee => attendee.GetProperty("displayName").GetString() == "Atleta DEV 2");
+    }
+
+    [Fact]
+    public async Task ListPendingAttendances_AsAthlete_ReturnsForbidden()
+    {
+        var athleteToken = await TestAuth.LoginAsync(_client, "+5511999990003");
+
+        using var listRequest = TestAuth.WithBearer(
+            HttpMethod.Get,
+            "/api/admin/trainings/treino-fisico-2026-09-15/attendances/pending",
+            athleteToken);
+
+        using var listResponse = await _client.SendAsync(listRequest);
+        Assert.Equal(HttpStatusCode.Forbidden, listResponse.StatusCode);
     }
 }

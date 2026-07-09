@@ -205,10 +205,10 @@ public static class AdminEndpoints
 
         group.MapGet("/trainings/{eventId}/attendances/pending", async (
             string eventId,
-            IAttendanceRepository attendances,
+            IAttendanceApprovalService approval,
             CancellationToken cancellationToken) =>
         {
-            var result = await attendances.ListPendingByEventAsync(eventId, cancellationToken);
+            var result = await approval.ListPendingAsync(eventId, cancellationToken);
             return Results.Ok(result);
         })
         .WithName("AdminListPendingAttendances")

@@ -1,4 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using Siena.Domain;
+using Siena.Domain.Events;
+using Siena.Domain.Users;
 using Siena.Infrastructure.Persistence.Entities;
 
 namespace Siena.Infrastructure.Persistence;
@@ -18,30 +21,30 @@ public static class DatabaseSeeder
                 Id = "user-admin-dev",
                 PhoneNumber = "+5511999990001",
                 DisplayName = "Admin DEV",
-                Role = "Administrador"
+                Role = DomainLabels.ToLabel(UserRole.Admin)
             },
             new UserEntity
             {
                 Id = "user-coach-dev",
                 PhoneNumber = "+5511999990002",
                 DisplayName = "Comissão DEV",
-                Role = "Comissão"
+                Role = DomainLabels.ToLabel(UserRole.Coach)
             },
             new UserEntity
             {
                 Id = "user-athlete-dev-1",
                 PhoneNumber = "+5511999990003",
                 DisplayName = "Atleta DEV 1",
-                Role = "Atleta",
-                Position = "Levantadora"
+                Role = DomainLabels.ToLabel(UserRole.Athlete),
+                Position = DomainLabels.ToLabel(PlayerPosition.Levantadora)
             },
             new UserEntity
             {
                 Id = "user-athlete-dev-2",
                 PhoneNumber = "+5511999990004",
                 DisplayName = "Atleta DEV 2",
-                Role = "Atleta",
-                Position = "Ponteiro"
+                Role = DomainLabels.ToLabel(UserRole.Athlete),
+                Position = DomainLabels.ToLabel(PlayerPosition.Ponteiro)
             });
 
         dbContext.Events.AddRange(
@@ -49,8 +52,8 @@ public static class DatabaseSeeder
             {
                 Id = "liga-nacional-minas-2026-03-15",
                 Title = "Liga Nacional — Siena vs. Minas T.C.",
-                Type = "Liga Nacional",
-                Category = "Masculino",
+                Type = DomainLabels.ToLabel(EventType.LigaNacional),
+                Category = DomainLabels.ToLabel(EventCategory.Masculino),
                 StartsAt = Utc("2026-03-15T19:30:00-03:00"),
                 Location = "Ginásio Principal",
                 Opponent = "Minas T.C.",
@@ -58,11 +61,11 @@ public static class DatabaseSeeder
             },
             new EventEntity
             {
-                Id = "treino-fisico-2026-06-15",
+                Id = "treino-fisico-2026-09-15",
                 Title = "Treino Físico",
-                Type = "Treino Físico",
-                Category = "Feminino",
-                StartsAt = Utc("2026-06-15T08:00:00-03:00"),
+                Type = DomainLabels.ToLabel(EventType.TreinoFisico),
+                Category = DomainLabels.ToLabel(EventCategory.Feminino),
+                StartsAt = Utc("2026-09-15T08:00:00-03:00"),
                 Location = "Centro de Treinamento",
                 Description = "Sessão de preparação física para o elenco feminino."
             },
@@ -70,8 +73,8 @@ public static class DatabaseSeeder
             {
                 Id = "amistoso-sesi-2026-03-22",
                 Title = "Amistoso — Siena vs. Sesi-SP",
-                Type = "Amistoso",
-                Category = "Masculino",
+                Type = DomainLabels.ToLabel(EventType.Amistoso),
+                Category = DomainLabels.ToLabel(EventCategory.Masculino),
                 StartsAt = Utc("2026-03-22T20:00:00-03:00"),
                 Location = "Fora de Casa",
                 Opponent = "Sesi-SP",
