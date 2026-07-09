@@ -34,4 +34,7 @@ Base URL padrão: `http://localhost:5000`
 | `eventId` | Treino/evento (seed: `treino-fisico-2026-09-15`) |
 | `userId` | Atleta para aprovação (seed: `user-athlete-dev-1`) |
 
-OpenAPI alternativo: `http://localhost:5000/openapi/v1.json` (Scalar: `/scalar`).
+OpenAPI (só Development/Testing): `http://localhost:5000/openapi/v1.json`  
+Scalar UI: `http://localhost:5000/scalar/v1`
+
+Guia completo de setup: [README.md](../README.md) na raiz do repositório.
